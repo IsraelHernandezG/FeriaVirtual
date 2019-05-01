@@ -247,7 +247,7 @@ void animate(void)
 
 }
 
-void display(Shader shader, Model modelo1, Model modelo2)
+void display(Shader shader, Model modelo1, Model ground)
 {
 	shader.use();
 
@@ -267,20 +267,22 @@ void display(Shader shader, Model modelo1, Model modelo2)
 	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
 	shader.setMat4("projection", projection);
 
-	//Auto
-	tmp = model = glm::translate(model, glm::vec3(movKit_z, 0.0f, -10.0f));
+	model = glm::mat4(1.0f);
+	//Ground
+	model = glm::scale(model, glm::vec3(tamanioPista / 10, tamanioPista / 10, tamanioPista / 10));
+	shader.setMat4("model", model);
+	ground.Draw(shader);
+
+	model = glm::mat4(1.0f);
+
+	//
+	tmp = model = glm::translate(model, glm::vec3(movKit_z, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(rotacion), glm::vec3(0.0f, 1.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f)); //earth
 	shader.setMat4("model", model);
 	modelo1.Draw(shader);
 
-	model = glm::mat4(1.0f);
-
-	model = glm::translate(model, glm::vec3(0.0f, -3.0f, -10.0f));
-	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(tamanioPista*2/1000, tamanioPista/1000, tamanioPista/1000));
-	shader.setMat4("model", model);
-	modelo2.Draw(shader);
+	
 	
 }
 
@@ -330,7 +332,7 @@ int main()
 	Shader modelShader("Shaders/modelLoading.vs", "Shaders/modelLoading.fs");
 	// Load models
 	Model Model1 =((char *)"Models/tierra/Earth.obj");
-	Model Model2 = ((char *)"Models/carril/carril.obj");
+	Model Model2 = ((char *)"Models/pista.obj");
 
     
 	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
