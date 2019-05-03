@@ -39,6 +39,12 @@ Esfera my_esfera(1.0);
 Cilindro my_cilindro(1.0);
 Toroide my_toroide(1.0);
 
+//escalas
+double sx_cil = 1.0f,
+	sy_cil = 1.0f,
+	sz_cil = 1.0f;
+
+
 //Camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 double	lastX = 0.0f,
@@ -276,7 +282,7 @@ void display(Shader shader, Model modelo1, Model ground)
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f)); //earth
 	shader.setMat4("model", model);
 
-	modelo1.Draw(shader);
+	//modelo1.Draw(shader);
 }
 
 void displayRoallingCoaster(Shader shader) {
@@ -304,32 +310,80 @@ void displayRoallingCoaster(Shader shader) {
 
 	glBindVertexArray(VAO);
 
-	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	/*model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 	shader.setMat4("model", model);
 	shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
 	shader.setVec3("diffuseColor", 0.302f, 0.098f, 0.058f);
 	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
-	my_esfera.render();	//Sphere
+	my_esfera.render();	//Sphere*/
 
 	model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(4.0f, 0.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+
+	//Segmento riel
+	//
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(sx_cil/4, sy_cil/8, sz_cil/8));
 	shader.setMat4("model", model);
 	shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
-	shader.setVec3("diffuseColor", 1.0f, 0.454f, 0.0f);
+	shader.setVec3("diffuseColor", 1.0f, 0.0f, 0.0f);
 	shader.setVec3("specularColor", 0.0f, 0.0f, 1.0f);
 	my_cilindro.render();
 
-	model = glm::mat4(1.0f);
+	tmp = model;
+
+	model = glm::translate(model, glm::vec3(0.0f, 2.0f, 4.0f));
+	model = glm::scale(model, glm::vec3(1.0f, 0.6f, 0.6f));
+	shader.setMat4("model", model);
+	shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	shader.setVec3("diffuseColor", 1.0f, 1.0f, 0.0f);
+	shader.setVec3("specularColor", 0.0f, 0.0f, 1.0f);
+	my_cilindro.render();
+
+	model = tmp;
+
+	model = glm::translate(model, glm::vec3(0.0f, 2.0f, -4.0f));
+	model = glm::scale(model, glm::vec3(1.0f, 0.6f, 0.6f));
+	shader.setMat4("model", model);
+	shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	shader.setVec3("diffuseColor", 1.0f, 1.0f, 0.0f);
+	shader.setVec3("specularColor", 0.0f, 0.0f, 1.0f);
+	my_cilindro.render();
+
+	model = tmp;
+
+	model = glm::translate(model, glm::vec3(0.0f, 1.0f, 2.0f));
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(-28.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::scale(model, glm::vec3(1.2f, 0.3f, 0.3f));
+	shader.setMat4("model", model);
+	shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	shader.setVec3("diffuseColor", 1.0f, 0.0f, 0.0f);
+	shader.setVec3("specularColor", 0.0f, 0.0f, 1.0f);
+	my_cilindro.render();
+
+	model = tmp;
+
+	model = glm::translate(model, glm::vec3(0.0f, 1.0f, -2.0f));
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(28.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::scale(model, glm::vec3(1.2f, 0.3f, 0.3f));
+	shader.setMat4("model", model);
+	shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	shader.setVec3("diffuseColor", 1.0f, 0.0f, 0.0f);
+	shader.setVec3("specularColor", 0.0f, 0.0f, 1.0f);
+	my_cilindro.render();
+
+
+
+	/*model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 	shader.setMat4("model", model);
 	shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
 	shader.setVec3("diffuseColor", 0.0f, 0.0f, 0.7f);
 	shader.setVec3("specularColor", 0.0f, 0.0f, 1.0f);
-	my_toroide.render();
+	my_toroide.render();*/
 
-	//glBindVertexArray(0);
 
 
 }
