@@ -14,8 +14,10 @@
 #include <stb_image.h>
 
 #include "camera.h"
+#include "cilindro.h"
+#include "esfera.h"
+#include "toroide.h"
 #include "Model.h"
-
 // Other Libs
 #include "SOIL2/SOIL2.h"
 
@@ -32,6 +34,11 @@ int SCR_HEIGHT = 7600;
 GLFWmonitor *monitors;
 GLuint VBO, VAO, EBO;
 
+//primitivas
+Esfera my_esfera(1.0);
+Cilindro my_cilindro(1.0);
+Toroide my_toroide(1.0);
+
 //Camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 double	lastX = 0.0f,
@@ -45,6 +52,7 @@ double	deltaTime = 0.0f,
 		lastFrame = 0.0f;
 
 //Lighting
+glm::vec3 lightPos(0.0f, 10.0f, 10.0f);
 glm::vec3 lightPosition(0.0f, 3.0f, 0.0f);
 glm::vec3 lightDirection(0.0f, 0.0f, -3.0f);
 
@@ -62,25 +70,12 @@ float	movX = 0.0f,
 		rotX = 0.0f;
 bool play = false;
 
-//Texture
-unsigned int	t_smile,
-				t_toalla,
-				t_unam,
-				t_white,
-				t_panda,
-				t_cubo,
-				t_caja,
-				t_caja_brillo;
-
 //For model
 float movKit_z = 0.0f,
 	girollanta = 0.0f,
 	direccion = 1.0f,
 	rotacion = 0.0f,
 	tamanioPista = 20.0f;
-
-
-
 
 unsigned int generateTextures(const char* filename, bool alfa)
 {
@@ -236,13 +231,13 @@ void animate(void)
 	
 	rotacion += 0.05f;
 
-	movKit_z += 0.01f * direccion;
+	/*movKit_z += 0.01f * direccion;
 	if (movKit_z >= tamanioPista) {
 		direccion = -1;
 	}
 	if (movKit_z <= -tamanioPista) {
 		direccion = 1;
-	}
+	}*/
 		
 
 }
@@ -276,14 +271,67 @@ void display(Shader shader, Model modelo1, Model ground)
 	model = glm::mat4(1.0f);
 
 	//
-	tmp = model = glm::translate(model, glm::vec3(movKit_z, 0.0f, 0.0f));
+	tmp = model = glm::translate(model, glm::vec3(movKit_z-4.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(rotacion), glm::vec3(0.0f, 1.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f)); //earth
 	shader.setMat4("model", model);
-	modelo1.Draw(shader);
 
-	
-	
+	modelo1.Draw(shader);
+}
+
+void displayRoallingCoaster(Shader shader) {
+
+	shader.use();
+	shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+	shader.setVec3("lightPos", lightPos);
+
+	// create transformations and Projection
+	glm::mat4 tmp = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
+	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
+	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
+
+	//Use "projection" to include Camera
+	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	view = camera.GetViewMatrix();
+
+	// pass them to the shaders
+	shader.setVec3("viewPos", camera.Position);
+	shader.setMat4("model", model);
+	shader.setMat4("view", view);
+	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+	shader.setMat4("projection", projection);
+
+	glBindVertexArray(VAO);
+
+	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	shader.setMat4("model", model);
+	shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	shader.setVec3("diffuseColor", 0.302f, 0.098f, 0.058f);
+	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	my_esfera.render();	//Sphere
+
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(4.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	shader.setMat4("model", model);
+	shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	shader.setVec3("diffuseColor", 1.0f, 0.454f, 0.0f);
+	shader.setVec3("specularColor", 0.0f, 0.0f, 1.0f);
+	my_cilindro.render();
+
+	model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	shader.setMat4("model", model);
+	shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	shader.setVec3("diffuseColor", 0.0f, 0.0f, 0.7f);
+	shader.setVec3("specularColor", 0.0f, 0.0f, 1.0f);
+	my_toroide.render();
+
+	//glBindVertexArray(0);
+
+
 }
 
 int main()
@@ -303,6 +351,9 @@ int main()
     // --------------------
 	monitors = glfwGetPrimaryMonitor();
 	getResolution();
+
+	//
+
 
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Practica 10", NULL, NULL);
     if (window == NULL)
@@ -327,9 +378,14 @@ int main()
 	//Datos a utilizar
 	LoadTextures();
 	myData();
+	my_esfera.init();
+	my_cilindro.init();
+	my_toroide.init();
 	glEnable(GL_DEPTH_TEST);
 	
 	Shader modelShader("Shaders/modelLoading.vs", "Shaders/modelLoading.fs");
+	Shader projectionShader("shaders/shader_light.vs", "shaders/shader_light.fs"); //PARA PRIMITIVAS
+
 	// Load models
 	Model Model1 =((char *)"Models/tierra/Earth.obj");
 	Model Model2 = ((char *)"Models/pista.obj");
@@ -357,6 +413,7 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		display(modelShader, Model1, Model2);
+		displayRoallingCoaster(projectionShader);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
