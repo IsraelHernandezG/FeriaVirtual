@@ -202,6 +202,8 @@ void myData()
 		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
 		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
 
+
+
 	};
 	unsigned int indices[] = {
 		0, 1, 3, // first triangle
@@ -382,10 +384,49 @@ void displayRoallingCoaster(Shader shader) {
 	shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
 	shader.setVec3("diffuseColor", 0.0f, 0.0f, 0.7f);
 	shader.setVec3("specularColor", 0.0f, 0.0f, 1.0f);
-	my_toroide.render();*/
+	my_toroide.render();
+*/
 
 
+}
 
+void displayCarrousell(Shader shader) {
+
+	shader.use();
+	shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+	shader.setVec3("lightPos", lightPos);
+
+	// create transformations and Projection
+	glm::mat4 tmp = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
+	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
+	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
+
+	//Use "projection" to include Camera
+	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	view = camera.GetViewMatrix();
+
+	// pass them to the shaders
+	shader.setVec3("viewPos", camera.Position);
+	shader.setMat4("model", model);
+	shader.setMat4("view", view);
+	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+	shader.setMat4("projection", projection);
+
+	glBindVertexArray(VAO);
+
+	/*
+	model = glm::scale(model, glm::vec3(0.5f, 0.2f, 0.3f));
+	view = glm::translate(view, glm::vec3(10.0f, -5.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
+	shader.setMat4("model", model);
+	shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	shader.setVec3("diffuseColor", 0.5f, 0.8f, 0.2f);
+	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	my_cilindro.render();	//Base Carrusel
+
+	model = glm::mat4(1.0f);
+	*/ //El modelo no quiere hacer la traslación, lo checo mañana [martes 07, 11:50pm]
 }
 
 int main()
@@ -468,6 +509,7 @@ int main()
 
 		display(modelShader, Model1, Model2);
 		displayRoallingCoaster(projectionShader);
+		displayCarrousell(projectionShader);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
