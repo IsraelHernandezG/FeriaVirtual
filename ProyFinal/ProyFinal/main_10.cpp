@@ -46,8 +46,8 @@ Toroide my_toroide(1.0);
 
 //escalas
 double sx_cil = 1.0f,
-sy_cil = 1.0f,
-sz_cil = 1.0f;
+	sy_cil = 1.0f,
+	sz_cil = 1.0f;
 
 //variable global montaña rusa
 glm::mat4 modelMR = glm::mat4(1.0f);
@@ -65,14 +65,14 @@ glm::mat4 modelGarbage = glm::mat4(1.0f);
 //Camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 double	lastX = 0.0f,
-lastY = 0.0f;
+		lastY = 0.0f;
 bool firstMouse = true;
 double xoffset1 = 0.01;
 double yoffset1 = 0.01;
 
 //Timing
 double	deltaTime = 0.0f,
-lastFrame = 0.0f;
+		lastFrame = 0.0f;
 
 //Lighting
 glm::vec3 lightPos(0.0f, 10.0f, 10.0f);
@@ -95,14 +95,16 @@ void resetElements();
 float	movX = 0.0f,
 movY = 0.0f,
 movZ = -5.0f;
-bool play = false;
+
+bool play = false,
+	horseOn = false;
 
 //For model
 float movKit_z = 0.0f,
-girollanta = 0.0f,
-direccion = 1.0f,
-rotacion = 0.0f,
-tamanioPista = 20.0f;
+	girollanta = 0.0f,
+	direccion = 1.0f,
+	rotacion = 0.0f,
+	tamanioPista = 20.0f;
 
 //for sol/lun
 float giroSol = 0.0f,
@@ -124,8 +126,8 @@ t_caja_brillo;
 
 //For carrusel
 float	animTubos = 0.0f,
-animGiro = 0.0f,
-movModelos = 0.0f;
+		animGiro = 0.0f,
+		movModelos = 0.0f;
 
 //Keyframes
 float	posX = 0.0f,
@@ -283,7 +285,7 @@ unsigned int generateTextures(const char* filename, bool alfa)
 	// load image, create texture and generate mipmaps
 	int width, height, nrChannels;
 	stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
-
+	
 	unsigned char *data = stbi_load(filename, &width, &height, &nrChannels, 0);
 	if (data)
 	{
@@ -352,7 +354,7 @@ void LoadTextures()
 }
 
 void myData()
-{
+{	
 	float vertices[] = {
 		// positions          // normals           // texture coords
 		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
@@ -423,7 +425,7 @@ void myData()
 		0, 1, 3, // first triangle
 		1, 2, 3  // second triangle
 	};
-
+	
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	glGenBuffers(1, &EBO);
@@ -684,7 +686,7 @@ void display(Shader shader, Model modelo1, Model ground)
 	model = glm::mat4(1.0f);
 
 	//
-	tmp = model = glm::translate(model, glm::vec3(movKit_z - 4.0f, 0.0f, 2.0f));
+	tmp = model = glm::translate(model, glm::vec3(movKit_z-4.0f, 0.0f, 2.0f));
 	model = glm::rotate(model, glm::radians(rotacion), glm::vec3(0.0f, 1.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f)); //earth
 	shader.setMat4("model", model);
@@ -773,7 +775,7 @@ void drawSegment(Shader projectionShader) {
 	projectionShader.setVec3("specularColor", 0.0f, 0.0f, 1.0f);
 	my_cilindro.render();
 
-
+	
 }
 
 void drawVagon(Shader projectionShader) {
@@ -2365,37 +2367,86 @@ void displayRoallingCoaster(Shader shader) {
 }
 
 
-GLfloat domeVertices[] =
-{
-	12,56,84,10,29,854,45,11,586,
-	0.0f, 0.0f, 10.0f, //pico
-	0.0f, 0.0f, -10.0f,
-	3.0f, 0.0f, -9.0f,
-	6.0f, 0.0f, -6.0f,
-	9.0f, 0.0f, -3.0f,
-	10.0f, 0.0f, 0.0f,
-	9.0f, 0.0f, 3.0f,
-	6.0f, 0.0f, 6.0f,
-	3.0f, 0.0f, 9.0f,
-	0.0f, 0.0f, 10.0f,
-	-3.0f, 0.0f, 9.0f,
-	-6.0f, 0.0f, 6.0f,
-	-9.0f, 0.0f, 3.0f,
-	-10.0f, 0.0f, 0.0f,
-	-9.0f, 0.0f, -3.0f,
-	-6.0f, 0.0f, -6.0f,
-	-3.0f, 0.0f, -9.0f,
-};
-
 void startCarrouselSpin() {
-
+	
 	animTubos += 0.5;
 	animGiro += 0.125;
 	movModelos += 0.2; //Velocidad con la que suben y bajan los modelos del carrusel en los tubos con ajuste para estar más pegados a la base.
 
 }
 
-void drawModelosCarrusel(Shader shader, Model modelo1)
+
+void drawModel(Shader shader, Model modelo1, int id) //con int id, agregamos un case al switch y así modificamos ahí individualmente los parámetros de dibujo
+{
+	shader.use();
+
+	glm::mat4 tmp = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(1.0f);
+	glm::mat4 view = glm::mat4(1.0f);
+	glm::mat4 projection = glm::mat4(1.0f);
+
+	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	view = camera.GetViewMatrix();
+
+	shader.setMat4("model", model);
+	shader.setMat4("view", view);
+	shader.setMat4("projection", projection);
+
+	switch (id) {
+	case 1: //El primer caballo del carrusel
+		model = glm::translate(model, glm::vec3(16.0f, -4.5f, 10.0f)); //Centro del carrusel
+
+		model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro al rededor del centro
+		model = glm::translate(model, glm::vec3(2.5f, (sin(movModelos) / 4) - 0.5f, 0.0f)); //Movimiento de subir y bajar y colocar en tubo
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); //Enderezar el modelo del caballo para que quede de pie
+		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f)); //Ajuste de posicion para que vea hacia enfrente
+		model = glm::scale(model, glm::vec3(0.04f, 0.04f, 0.04f)); //Ajustar el tamaño del modelo caballo
+		shader.setMat4("model", model);
+
+		modelo1.Draw(shader);
+		break;
+	case 2: //La primer lámpara cuádruple que va a un lado del carrusel
+		model = glm::translate(model, glm::vec3(10.0f, -4.5f, -1.0f));
+		model = glm::scale(model, glm::vec3(0.0025f, 0.0025f, 0.0025f));
+		shader.setMat4("model", model);
+		modelo1.Draw(shader);
+		break;
+	case 3:
+		model = glm::translate(model, glm::vec3(16.0f, -4.5f, 10.0f)); //Centro del carrusel
+		model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro al rededor del centro
+		model = glm::translate(model, glm::vec3(-2.5f, (sin(movModelos + 90) / 4) - 0.5f, 0.0f)); //Movimiento de subir y bajar y colocar en tubo
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); //Enderezar el modelo del caballo para que quede de pie
+		model = glm::scale(model, glm::vec3(0.04f, 0.04f, 0.04f)); //Ajustar el tamaño del modelo caballo
+		shader.setMat4("model", model);
+		modelo1.Draw(shader);
+		break;
+	case 4:
+		model = glm::translate(model, glm::vec3(16.0f, -4.5f, 10.0f)); //Centro del carrusel
+		model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro al rededor del centro
+		model = glm::translate(model, glm::vec3(0.0f, (sin(movModelos) / 4) - 0.5f, 2.5f)); //Movimiento de subir y bajar y colocar en tubo
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); //Enderezar el modelo del caballo para que quede de pie
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f)); //Ajuste de posicion para que vea hacia enfrente
+		model = glm::scale(model, glm::vec3(0.04f, 0.04f, 0.04f)); //Ajustar el tamaño del modelo caballo
+		shader.setMat4("model", model);
+		modelo1.Draw(shader);
+		break;
+	case 5:
+		model = glm::translate(model, glm::vec3(16.0f, -4.5f, 10.0f)); //Centro del carrusel
+		model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro al rededor del centro
+		model = glm::translate(model, glm::vec3(0.0f, (sin(movModelos + 90) / 4) - 0.5f, -2.5f)); //Movimiento de subir y bajar y colocar en tubo
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); //Enderezar el modelo del caballo para que quede de pie
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f)); //Ajuste de posicion para que vea hacia enfrente
+		model = glm::scale(model, glm::vec3(0.04f, 0.04f, 0.04f)); //Ajustar el tamaño del modelo caballo
+		shader.setMat4("model", model); 
+		modelo1.Draw(shader);
+
+		break;
+
+	}
+
+}
+
+void drawModelosCarrusel(Shader shader, Model modelo1) //Creo una funcion duplicado "drawModel" con identificador, para dibujar objetos con una sola funcion.
 {
 	shader.use();
 
@@ -2565,8 +2616,20 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 	shader.setVec3("diffuseColor", 0.84f, 0.84f, 0.84f);
 	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	my_cilindro.render();
-	model = tmp;
-	modelHorse = model;
+	if (!horseOn) {
+		//Sillita
+		model = tmp;
+		model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
+		model = glm::translate(model, glm::vec3(2.5f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(sx_cil / 2, sy_cil / 8, sz_cil / 2));
+		model = glm::translate(model, glm::vec3(0.0f, (sin(movModelos + 135)) - 0.5f, 0.0f)); //Movimiento de subir y bajar y colocar en tubo
+		shader.setMat4("model", model);
+		shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+		shader.setVec3("diffuseColor", 1.0f, 0.0f, 0.0f);
+		shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+		my_esfera.render();
+	}
+	
 
 	//#2
 	model = tmp;
@@ -2579,6 +2642,19 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 	shader.setVec3("diffuseColor", 0.84f, 0.84f, 0.84f);
 	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	my_cilindro.render();
+	if (!horseOn) {
+		//Sillita
+		model = tmp;
+		model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
+		model = glm::translate(model, glm::vec3(-2.5f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(sx_cil / 2, sy_cil / 8, sz_cil / 2));
+		model = glm::translate(model, glm::vec3(0.0f, (sin(movModelos + 135)) - 0.5f, 0.0f)); //Movimiento de subir y bajar y colocar en tubo
+		shader.setMat4("model", model);
+		shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+		shader.setVec3("diffuseColor", 1.0f, 0.0f, 0.0f);
+		shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+		my_esfera.render();
+	}
 
 	//#3
 	model = tmp;
@@ -2591,6 +2667,19 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 	shader.setVec3("diffuseColor", 0.84f, 0.84f, 0.84f);
 	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	my_cilindro.render();
+	if (!horseOn) {
+		//Sillita
+		model = tmp;
+		model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 2.5f));
+		model = glm::scale(model, glm::vec3(sx_cil / 2, sy_cil / 8, sz_cil / 2));
+		model = glm::translate(model, glm::vec3(0.0f, (sin(movModelos + 135)) - 0.5f, 0.0f)); //Movimiento de subir y bajar y colocar en tubo
+		shader.setMat4("model", model);
+		shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+		shader.setVec3("diffuseColor", 1.0f, 0.0f, 0.0f);
+		shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+		my_esfera.render();
+	}
 
 	//#4
 	model = tmp;
@@ -2603,6 +2692,19 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 	shader.setVec3("diffuseColor", 0.84f, 0.84f, 0.84f);
 	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	my_cilindro.render();
+	if (!horseOn) {
+		//Sillita
+		model = tmp;
+		model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -2.5f));
+		model = glm::scale(model, glm::vec3(sx_cil / 2, sy_cil / 8, sz_cil / 2));
+		model = glm::translate(model, glm::vec3(0.0f, (sin(movModelos + 135)) - 0.5f, 0.0f)); //Movimiento de subir y bajar y colocar en tubo
+		shader.setMat4("model", model);
+		shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+		shader.setVec3("diffuseColor", 1.0f, 0.0f, 0.0f);
+		shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+		my_esfera.render();
+	}
 
 	//#5
 	model = tmp;
@@ -2615,6 +2717,18 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 	shader.setVec3("diffuseColor", 0.84f, 0.84f, 0.84f);
 	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	my_cilindro.render();
+	//Sillita
+	model = tmp;
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 1.0f));
+	model = glm::scale(model, glm::vec3(sx_cil / 2, sy_cil / 8 , sz_cil / 2 ));
+	model = glm::translate(model, glm::vec3(0.0f, (sin(movModelos)) - 0.5f, 0.0f)); //Movimiento de subir y bajar y colocar en tubo
+	shader.setMat4("model", model);
+	shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	shader.setVec3("diffuseColor", 1.0f, 1.0f, 0.0f);
+	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	my_esfera.render();
+
 
 	//#6
 	model = tmp;
@@ -2627,6 +2741,17 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 	shader.setVec3("diffuseColor", 0.84f, 0.84f, 0.84f);
 	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	my_cilindro.render();
+	//Sillita
+	model = tmp;
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 1.0f));
+	model = glm::scale(model, glm::vec3(sx_cil / 2, sy_cil / 8, sz_cil / 2));
+	model = glm::translate(model, glm::vec3(0.0f, (sin(movModelos + 90)) - 0.5f, 0.0f)); //Movimiento de subir y bajar y colocar en tubo
+	shader.setMat4("model", model);
+	shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	shader.setVec3("diffuseColor", 1.0f, 1.0f, 0.0f);
+	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	my_esfera.render();
 
 	//#7
 	model = tmp;
@@ -2639,7 +2764,17 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 	shader.setVec3("diffuseColor", 0.84f, 0.84f, 0.84f);
 	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	my_cilindro.render();
-
+	//Sillita
+	model = tmp;
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
+	model = glm::scale(model, glm::vec3(sx_cil / 2, sy_cil / 8, sz_cil / 2));
+	model = glm::translate(model, glm::vec3(0.0f, (sin(movModelos + 45)) - 0.5f, 0.0f)); //Movimiento de subir y bajar y colocar en tubo
+	shader.setMat4("model", model);
+	shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	shader.setVec3("diffuseColor", 1.0f, 1.0f, 0.0f);
+	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	my_esfera.render();
 
 	//#8
 	model = tmp;
@@ -2652,45 +2787,35 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 	shader.setVec3("diffuseColor", 0.84f, 0.84f, 0.84f);
 	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	my_cilindro.render();
-
-	//	model = glm::scale(model, glm::vec3(0.5f, 0.2f, 0.3f));
-	//	view = glm::translate(view, glm::vec3(10.0f, -5.0f, 0.0f));
-	//	model = glm::rotate(model, glm::radians(0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
-	//	shader.setMat4("model", model);
-	//	shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
-	//	shader.setVec3("diffuseColor", 0.5f, 0.8f, 0.2f);
-	//	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
-	//	my_cilindro.render();	//Base Carrusel
+	//Sillita
+	model = tmp;
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, -1.0f));
+	model = glm::scale(model, glm::vec3(sx_cil / 2, sy_cil / 8, sz_cil / 2));
+	model = glm::translate(model, glm::vec3(0.0f, (sin(movModelos + 135)) - 0.5f, 0.0f)); //Movimiento de subir y bajar y colocar en tubo
+	shader.setMat4("model", model);
+	shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	shader.setVec3("diffuseColor", 1.0f, 1.0f, 0.0f);
+	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	my_esfera.render();
 
 	model = glm::mat4(1.0f);
-	drawModelosCarrusel(Modelshader, modelo1);
+	//drawModelosCarrusel(Modelshader, modelo1);
+	if (horseOn) {
+		drawModel(Modelshader, modelo1, 1); //Función equivalente utilizando la nueva función para evitar el duplicado de código
+		drawModel(Modelshader, modelo1, 3);
+		drawModel(Modelshader, modelo1, 4);
+		drawModel(Modelshader, modelo1, 5);
+	}
 }
 
-void displayScene(Shader shader, Model modelo1, Model modelo2, Model modelo3) {
+//Dentro de ésta funcion mandamos a llamar a drawModelos con el modelo que queramos y un id creciente; dentro de esa función modificamos los parámetros de dibujo.
+void displayObjects(Shader shader, Model modelTierra, Model modelPista, /*Model modelArbol, Model modelBanca, Model modelBasura, Model modelBarda,*/ Model modelCaballo, /*Model modelLuz2,*/ Model modelLuz4/*, Model modelLuz1, Model modelEntrada*/) {
 	shader.use();
 
-	// create transformations and Projection
-	glm::mat4 tmp = glm::mat4(1.0f);
-	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
-	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
-	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
+	//drawModelos(shader, modelCaballo, 1);
+	drawModel(shader, modelLuz4, 2);
 
-	//Use "projection" to include Camera
-	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-	view = camera.GetViewMatrix();
-
-	// pass them to the shaders
-	shader.setMat4("model", model);
-	shader.setMat4("view", view);
-	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
-	shader.setMat4("projection", projection);
-
-
-	model = glm::translate(model, glm::vec3(-2.0f, -4.5f, 1.0f));
-	model = glm::scale(model, glm::vec3(0.04f, 0.04f, 0.04f));
-	shader.setMat4("model", model);
-
-	modelo1.Draw(shader);
 }
 
 void creaArchivo(string name) {
@@ -2742,35 +2867,35 @@ void editarArchivo(string name, string contenido) {
 
 int main()
 {
-	// glfw: initialize and configure
-	// ------------------------------
-	glfwInit();
-	/*glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);*/
+    // glfw: initialize and configure
+    // ------------------------------
+    glfwInit();
+    /*glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);*/
 
 #ifdef __APPLE__
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
 #endif
 
-	// glfw window creation
-	// --------------------
+    // glfw window creation
+    // --------------------
 	monitors = glfwGetPrimaryMonitor();
 	getResolution();
 
 	//
 
 
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Practica 10", NULL, NULL);
-	if (window == NULL)
-	{
-		std::cout << "Failed to create GLFW window" << std::endl;
-		glfwTerminate();
-		return -1;
-	}
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Practica 10", NULL, NULL);
+    if (window == NULL)
+    {
+        std::cout << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
 	glfwSetWindowPos(window, 0, 30);
-	glfwMakeContextCurrent(window);
-	glfwSetFramebufferSizeCallback(window, resize);
+    glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, resize);
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
 
@@ -2787,75 +2912,74 @@ int main()
 	my_cilindro.init();
 	my_toroide.init();
 	glEnable(GL_DEPTH_TEST);
-
+	
 	Shader modelShader("Shaders/modelLoading.vs", "Shaders/modelLoading.fs");
 	Shader projectionShader("shaders/shader_light.vs", "shaders/shader_light.fs"); //PARA PRIMITIVAS
 
 	// Load models
-	Model Model1 = ((char *)"Models/tierra/Earth.obj");
-	Model Model2 = ((char *)"Models/pista.obj");
-	//Model Model7 = ((char *)"Models/caballo/caballo.obj");
-	/*Model Model3 = ((char *)"Models/arbol/arbol.obj");
-	Model Model4 = ((char *)"Models/banca/banca.obj");
-	Model Model5 = ((char *)"Models/basura/basura.obj");
-	Model Model6 = ((char *)"Models/barda/barda.obj");
-	
-	Model Model8 = ((char *)"Models/luz_dual/luz_dual.obj");
-	Model Model9 = ((char *)"Models/luz_quad/luz_quad.obj");
-	Model Model10 = ((char *)"Models/luz_simple/luz_simple.obj");
-	Model Model11 = ((char *)"Models/arco/arco.obj");*/
+	Model modelTierra	= ((char *)"Models/tierra/Earth.obj");
+	Model modelPista	= ((char *)"Models/pista.obj");
+	//Model modelArbol	= ((char *)"Models/arbol/arbol.obj");
+	//Model modelBanca	= ((char *)"Models/banca/banca.obj");
+	//Model modelBasura	= ((char *)"Models/basura/basura.obj");
+	//Model modelBarda	= ((char *)"Models/barda/barda.obj");
+	Model modelCaballo = ((char *)"Models/caballo/caballo.obj");
+	//Model modelLuz2		= ((char *)"Models/luz_dual/luz_dual.obj");
+	Model modelLuz4		= ((char *)"Models/luz_quad/luz_quad.obj");
+	//Model modelLuz1		= ((char *)"Models/luz_simple/luz_simple.obj");
+	//Model modelEntrada	= ((char *)"Models/arco/arco.obj");
 	//Model Model = ((char *)"Models/.obj");
 
-
+    
 	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
 	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 	// render loop
-	// While the windows is not closed
-	while (!glfwWindowShouldClose(window))
-	{
+    // While the windows is not closed
+    while (!glfwWindowShouldClose(window))
+    {
 		// per-frame time logic
 		// --------------------
 		double currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
-		// input
-		// -----
-		my_input(window);
+        // input
+        // -----
+        my_input(window);
 		animate();
 		startCarrouselSpin(); //Animación de giro de los tubos #MARK Los modelos de caballos deben girar a ésta velocidad y subir bajar de una forma senoidal
 
-		// render
-		// Backgound color
+        // render
+        // Backgound color
 		glClearColor(colorR, colorGB, colorGB, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		display(modelShader, Model1, Model2);
-		//displayRoallingCoaster(projectionShader);
+		display(modelShader, modelTierra, modelPista);
+		displayRoallingCoaster(projectionShader);
 		drawVagon(projectionShader);
 		diplayElemCielo();
-		//displayCarrousell(projectionShader, modelShader, Model7);
-		//displayScene(modelShader, Model12, Model10, Model11);
+		displayCarrousell(projectionShader, modelShader, modelCaballo);
+		displayObjects(modelShader, modelTierra, modelPista, /*modelArbol, modelBanca, modelBasura, modelBarda,*/ modelCaballo, /*modelLuz2,*/ modelLuz4/*, modelLuz1, modelEntrada*/);
 
-		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-		// -------------------------------------------------------------------------------
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-	}
+        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+        // -------------------------------------------------------------------------------
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
 
-	// glfw: terminate, clearing all previously allocated GLFW resources.
-	// ------------------------------------------------------------------
+    // glfw: terminate, clearing all previously allocated GLFW resources.
+    // ------------------------------------------------------------------
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 
-	glfwTerminate();
-	return 0;
+    glfwTerminate();
+    return 0;
 }
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
 void my_input(GLFWwindow *window)
 {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 	if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS) {
 		xoffset1 = 4.0;
@@ -2981,16 +3105,18 @@ void my_input(GLFWwindow *window)
 		glfwWaitEventsTimeout(1.7);
 	}
 
+	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
+		horseOn = !horseOn;
+	}
 
-		
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
 void resize(GLFWwindow* window, int width, int height)
 {
-	// Set the Viewport to the size of the created window
-	glViewport(0, 0, width, height);
+    // Set the Viewport to the size of the created window
+    glViewport(0, 0, width, height);
 }
 
 // glfw: whenever the mouse moves, this callback is called
