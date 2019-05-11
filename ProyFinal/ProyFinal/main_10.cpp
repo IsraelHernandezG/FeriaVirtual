@@ -46,14 +46,15 @@ double sx_cil = 1.0f,
 
 //variable global montaña rusa
 glm::mat4 modelMR = glm::mat4(1.0f);
+glm::mat4 modelEarth = glm::mat4(1.0f);
 
 //Camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 double	lastX = 0.0f,
 		lastY = 0.0f;
 bool firstMouse = true;
-double xoffset1 = 3.8;
-double yoffset1 = 3.8;
+double xoffset1 = 0.01;
+double yoffset1 = 0.01;
 
 //Timing
 double	deltaTime = 0.0f,
@@ -288,7 +289,7 @@ void display(Shader shader, Model modelo1, Model ground)
 	model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f)); //earth
 	shader.setMat4("model", model);
 
-	modelo1.Draw(shader);
+	//modelo1.Draw(shader);
 }
 
 void drawSegment(Shader projectionShader) {
@@ -401,13 +402,8 @@ void displayRoallingCoaster(Shader shader) {
 	shader.setMat4("projection", projection);
 
 	modelMR = glm::mat4(1.0f);
-
-	drawSegment(temp);
 	model = modelMR;
 	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
-	modelMR = model;
-	drawSegment(temp);
-	model = modelMR;
 	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
 	modelMR = model;
 	drawSegment(temp);
@@ -1211,18 +1207,6 @@ void displayRoallingCoaster(Shader shader) {
 	modelMR = model;
 	drawSegment(temp);
 	model = modelMR;
-	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
-	modelMR = model;
-	drawSegment(temp);
-	model = modelMR;
-	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
-	modelMR = model;
-	drawSegment(temp);
-	model = modelMR;
-	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
-	modelMR = model;
-	drawSegment(temp);
-	model = modelMR;
 	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
 	model = glm::rotate(model, glm::radians(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -1304,6 +1288,12 @@ void displayRoallingCoaster(Shader shader) {
 	model = glm::translate(model, glm::vec3(0.5f, -0.05f, 0.0f));
 	model = glm::rotate(model, glm::radians(-1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(-10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, -0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(-1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(-2.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	modelMR = model;
 	drawSegment(temp);
 	//inicia giro
@@ -1397,28 +1387,477 @@ void displayRoallingCoaster(Shader shader) {
 	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	modelMR = model;
 	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, -0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(-10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, -0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(-10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, -0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(-10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, -0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(-10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, -0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(-10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, -0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(-10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, -0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(-10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, -0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(-10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, -0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(-10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, -0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(-9.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	//
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
 
-
-
-
-	/*model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-shader.setMat4("model", model);
-shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
-shader.setVec3("diffuseColor", 0.302f, 0.098f, 0.058f);
-shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
-my_esfera.render();	//Sphere*/
-
-
-	/*model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-	shader.setMat4("model", model);
-	shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
-	shader.setVec3("diffuseColor", 0.0f, 0.0f, 0.7f);
-	shader.setVec3("specularColor", 0.0f, 0.0f, 1.0f);
-	my_toroide.render();
-*/
-
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.7f, 0.0f, -0.05f));
+	model = glm::rotate(model, glm::radians(6.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	//
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, -0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(-10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, -0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(-10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, -0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(-10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, -0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(-10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	modelMR = model;
+	drawSegment(temp);
+	model = modelMR;
+	model = glm::translate(model, glm::vec3(0.5f, 0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelMR = model;
+	drawSegment(temp);
+	
 
 }
 
@@ -1449,7 +1888,36 @@ void startCarrouselSpin() {
 	animTubos += 0.5;
 }
 
-void displayCarrousell(Shader shader) {
+void drawModelosCarrusel(Shader shader, Model modelo1)
+{
+	shader.use();
+
+	// create transformations and Projection
+	glm::mat4 tmp = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
+	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
+	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
+
+	//Use "projection" to include Camera
+	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	view = camera.GetViewMatrix();
+
+	// pass them to the shaders
+	shader.setMat4("model", model);
+	shader.setMat4("view", view);
+	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+	shader.setMat4("projection", projection);
+
+	model = modelEarth;
+	//
+	model = glm::scale(model, glm::vec3(0.2f, 2.0f, 2.0f)); //earth
+	shader.setMat4("model", model);
+
+	modelo1.Draw(shader);
+}
+
+
+void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 
 	shader.use();
 	shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
@@ -1526,6 +1994,7 @@ void displayCarrousell(Shader shader) {
 	model = glm::translate(model, glm::vec3(0.0f, -1.2f, 0.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(sx_cil / 8, sy_cil * 3.185, sz_cil * 3.185));
+	modelEarth = model;
 	shader.setMat4("model", model);
 	shader.setVec3("ambientColor", 0.83f, 0.68f, 0.21f);
 	shader.setVec3("diffuseColor", 0.51f, 0.22f, 0.09f);
@@ -1543,7 +2012,7 @@ void displayCarrousell(Shader shader) {
 	shader.setVec3("diffuseColor", 1.0f, 1.0f, 0.0f);
 	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	my_cilindro.render();
-
+	
 	//Techo del carrusel
 	model = tmp;
 	model = glm::translate(model, glm::vec3(0.0f, 1.2f, 0.0f));
@@ -1579,7 +2048,8 @@ void displayCarrousell(Shader shader) {
 	shader.setVec3("diffuseColor", 0.84f, 0.84f, 0.84f);
 	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	my_cilindro.render();
-
+	modelEarth = model;
+	
 	//#2
 	model = tmp;
 	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //traslacion
@@ -1674,6 +2144,7 @@ void displayCarrousell(Shader shader) {
 //	my_cilindro.render();	//Base Carrusel
 
 	model = glm::mat4(1.0f);
+	drawModelosCarrusel(Modelshader, modelo1);
 }
 
 int main()
@@ -1727,7 +2198,6 @@ int main()
 	
 	Shader modelShader("Shaders/modelLoading.vs", "Shaders/modelLoading.fs");
 	Shader projectionShader("shaders/shader_light.vs", "shaders/shader_light.fs"); //PARA PRIMITIVAS
-	Shader projShadCarr("shaders/shader_light.vs", "shaders/shader_light.fs");
 
 	// Load models
 	Model Model1 =((char *)"Models/tierra/Earth.obj");
@@ -1758,7 +2228,7 @@ int main()
 
 		display(modelShader, Model1, Model2);
 		displayRoallingCoaster(projectionShader);
-		displayCarrousell(projShadCarr);
+		displayCarrousell(projectionShader, modelShader, Model1);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -1781,7 +2251,10 @@ void my_input(GLFWwindow *window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
-
+	if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS){
+		xoffset1 = 2.0;
+		yoffset1 = 2.0;
+	}
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera.ProcessKeyboard(FORWARD, (float)deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -1792,18 +2265,18 @@ void my_input(GLFWwindow *window)
 		camera.ProcessKeyboard(RIGHT, (float)deltaTime);
 
 	if (glfwGetKey(window, GLFW_KEY_KP_4) == GLFW_PRESS) {
-		camera.ProcessMouseMovement(-xoffset1, 0);
+		camera.ProcessMouseMovement(-xoffset1/(float)deltaTime, 0);
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_KP_6) == GLFW_PRESS) {
-		camera.ProcessMouseMovement(xoffset1, 0);
+		camera.ProcessMouseMovement(xoffset1/(float)deltaTime, 0);
 	}
 	if (glfwGetKey(window, GLFW_KEY_KP_8) == GLFW_PRESS) {
-		camera.ProcessMouseMovement(0, yoffset1);
+		camera.ProcessMouseMovement(0, yoffset1 / (float)deltaTime);
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_KP_2) == GLFW_PRESS) {
-		camera.ProcessMouseMovement(0, -yoffset1);
+		camera.ProcessMouseMovement(0, -yoffset1 / (float)deltaTime);
 	}
 
 }
