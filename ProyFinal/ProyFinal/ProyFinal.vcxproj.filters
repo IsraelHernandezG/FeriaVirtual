@@ -28,4 +28,18 @@
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="camera.h">
+      <Filter>Archivos de recursos</Filter>
+    </ClInclude>
+    <ClInclude Include="cilindro.h">
+      <Filter>Archivos de recursos</Filter>
+    </ClInclude>
+    <ClInclude Include="esfera.h">
+      <Filter>Archivos de recursos</Filter>
+    </ClInclude>
+    <ClInclude Include="toroide.h">
+      <Filter>Archivos de recursos</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

@@ -24,6 +24,12 @@
     <ClCompile Include="main_10.cpp" />
     <ClCompile Include="toroide.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="camera.h" />
+    <ClInclude Include="cilindro.h" />
+    <ClInclude Include="esfera.h" />
+    <ClInclude Include="toroide.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{B83349CE-38F9-411F-AA2C-D4BF2E2F2B09}</ProjectGuid>
