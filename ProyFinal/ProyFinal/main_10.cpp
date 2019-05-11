@@ -47,6 +47,14 @@ double sx_cil = 1.0f,
 //variable global montaña rusa
 glm::mat4 modelMR = glm::mat4(1.0f);
 glm::mat4 modelEarth = glm::mat4(1.0f);
+glm::mat4 modelHorse = glm::mat4(1.0f);
+glm::mat4 modelSingleLamp = glm::mat4(1.0f);
+glm::mat4 modelDoubleLamp = glm::mat4(1.0f);
+glm::mat4 modelQuadLamp = glm::mat4(1.0f);
+glm::mat4 modelFence = glm::mat4(1.0f);
+glm::mat4 modelBush = glm::mat4(1.0f);
+glm::mat4 modelArch = glm::mat4(1.0f);
+glm::mat4 modelGarbage = glm::mat4(1.0f);
 
 //Camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -88,7 +96,9 @@ float movKit_z = 0.0f,
 	tamanioPista = 20.0f;
 
 //For carrusel
-float	animTubos = 0.0f;
+float	animTubos = 0.0f,
+		animGiro = 0.0f,
+		movModelos = 0.0f;
 
 unsigned int generateTextures(const char* filename, bool alfa)
 {
@@ -403,7 +413,7 @@ void displayRoallingCoaster(Shader shader) {
 
 	modelMR = glm::mat4(1.0f);
 	model = modelMR;
-	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(0.78f, -4.5f, 0.0f));
 	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
 	modelMR = model;
 	drawSegment(temp);
@@ -1885,7 +1895,11 @@ GLfloat domeVertices[] =
 };
 
 void startCarrouselSpin() {
+	
 	animTubos += 0.5;
+	animGiro += 0.125;
+	movModelos += 0.2; //Velocidad con la que suben y bajan los modelos del carrusel en los tubos con ajuste para estar más pegados a la base.
+
 }
 
 void drawModelosCarrusel(Shader shader, Model modelo1)
@@ -1908,14 +1922,17 @@ void drawModelosCarrusel(Shader shader, Model modelo1)
 	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
 	shader.setMat4("projection", projection);
 
-	model = modelEarth;
+	model = modelHorse;
 	//
-	model = glm::scale(model, glm::vec3(0.2f, 2.0f, 2.0f)); //earth
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro al rededor del centro
+	model = glm::translate(model, glm::vec3(2.5f, (sin(movModelos) / 4) - 0.5f, 0.0f)); //Movimiento de subir y bajar
+	model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); //Enderezar el modelo del caballo para que quede de pie
+	model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f)); //Ajuste de posicion para que vea hacia enfrente
+	model = glm::scale(model, glm::vec3(0.04f, 0.04f, 0.04f)); //Ajustar el tamaño del modelo caballo
 	shader.setMat4("model", model);
 
 	modelo1.Draw(shader);
 }
-
 
 void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 
@@ -1955,9 +1972,10 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 //	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 //	modelMR = model;
 
-	//Centro del carrusel
-	model = glm::translate(model, glm::vec3(20.0f, 0.0f, 10.0f));
+//Centro del carrusel
+	model = glm::translate(model, glm::vec3(16.0f, -4.5f, 10.0f));
 	tmp = model;
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(sx_cil / 1.3, sy_cil / 1.5, sz_cil / 1.5));
 	shader.setMat4("model", model);
@@ -1968,6 +1986,7 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 
 	//Color 1 de la base
 	model = tmp;
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
 	model = glm::translate(model, glm::vec3(0.0f, -1.3f, 0.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(sx_cil / 8, sy_cil * 3.19, sz_cil * 3.19));
@@ -1979,6 +1998,7 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 
 	//Color 2 de la base
 	model = tmp;
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
 	model = glm::translate(model, glm::vec3(0.0f, -1.5f, 0.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(sx_cil / 8, sy_cil * 3.2, sz_cil * 3.2));
@@ -1991,10 +2011,11 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 	//Base
 	//#MARK poner una textura de madera
 	model = tmp;
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
 	model = glm::translate(model, glm::vec3(0.0f, -1.2f, 0.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(sx_cil / 8, sy_cil * 3.185, sz_cil * 3.185));
-	modelEarth = model;
+	modelHorse = model;
 	shader.setMat4("model", model);
 	shader.setVec3("ambientColor", 0.83f, 0.68f, 0.21f);
 	shader.setVec3("diffuseColor", 0.51f, 0.22f, 0.09f);
@@ -2004,6 +2025,7 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 	//Cabecera del carrusel
 	//#MARK A este modelo le ponemos la textura "CabeceraCarrusel.png para que se vea bonito :v
 	model = tmp;
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
 	model = glm::translate(model, glm::vec3(0.0f, 1.4f, 0.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(sx_cil / 4, sy_cil * 3.5, sz_cil * 3.5));
@@ -2012,9 +2034,10 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 	shader.setVec3("diffuseColor", 1.0f, 1.0f, 0.0f);
 	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	my_cilindro.render();
-	
+
 	//Techo del carrusel
 	model = tmp;
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
 	model = glm::translate(model, glm::vec3(0.0f, 1.2f, 0.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(sx_cil / 4, sy_cil * 3.49, sz_cil * 3.49));
@@ -2027,6 +2050,7 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 	//Esfera de adorno que va arriba de la cúpula/domo sobre el carrusel
 	//#MARK Aún no encuentro cómo declarar la primitiva para la cúpula; pensaba hacer triángulos como dibujamos las cajas en prácticas pasadas, pero el shader no me deja xdddd
 	model = tmp;
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
 	model = glm::translate(model, glm::vec3(0.0f, 3.5f, 0.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(sx_cil / 4, sy_cil / 4, sz_cil / 4));
@@ -2039,20 +2063,21 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 	//Tubos para modelo de caballo
 	//#1
 	model = tmp;
-	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //traslacion
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
 	model = glm::translate(model, glm::vec3(2.5f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-	model = glm::scale(model, glm::vec3(sx_cil , sy_cil / 15, sz_cil / 15));
+	model = glm::scale(model, glm::vec3(sx_cil, sy_cil / 15, sz_cil / 15));
 	shader.setMat4("model", model);
 	shader.setVec3("ambientColor", 0.83f, 0.68f, 0.21f);
 	shader.setVec3("diffuseColor", 0.84f, 0.84f, 0.84f);
 	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	my_cilindro.render();
-	modelEarth = model;
-	
+	model = tmp;
+	modelHorse = model;
+
 	//#2
 	model = tmp;
-	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //traslacion
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
 	model = glm::translate(model, glm::vec3(-2.5f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(sx_cil, sy_cil / 15, sz_cil / 15));
@@ -2064,7 +2089,7 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 
 	//#3
 	model = tmp;
-	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //traslacion
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 2.5f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(sx_cil, sy_cil / 15, sz_cil / 15));
@@ -2076,7 +2101,7 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 
 	//#4
 	model = tmp;
-	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //traslacion
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -2.5f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(sx_cil, sy_cil / 15, sz_cil / 15));
@@ -2088,7 +2113,7 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 
 	//#5
 	model = tmp;
-	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //traslacion
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 1.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(sx_cil, sy_cil / 18, sz_cil / 18));
@@ -2100,7 +2125,7 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 
 	//#6
 	model = tmp;
-	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //traslacion
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
 	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 1.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(sx_cil, sy_cil / 18, sz_cil / 18));
@@ -2112,7 +2137,7 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 
 	//#7
 	model = tmp;
-	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //traslacion
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
 	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(sx_cil, sy_cil / 18, sz_cil / 18));
@@ -2122,9 +2147,10 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	my_cilindro.render();
 
+
 	//#8
 	model = tmp;
-	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //traslacion
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, -1.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(sx_cil, sy_cil / 18, sz_cil / 18));
@@ -2134,17 +2160,44 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
 	my_cilindro.render();
 
-//	model = glm::scale(model, glm::vec3(0.5f, 0.2f, 0.3f));
-//	view = glm::translate(view, glm::vec3(10.0f, -5.0f, 0.0f));
-//	model = glm::rotate(model, glm::radians(0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
-//	shader.setMat4("model", model);
-//	shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
-//	shader.setVec3("diffuseColor", 0.5f, 0.8f, 0.2f);
-//	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
-//	my_cilindro.render();	//Base Carrusel
+	//	model = glm::scale(model, glm::vec3(0.5f, 0.2f, 0.3f));
+	//	view = glm::translate(view, glm::vec3(10.0f, -5.0f, 0.0f));
+	//	model = glm::rotate(model, glm::radians(0.5f), glm::vec3(1.0f, 1.0f, 1.0f));
+	//	shader.setMat4("model", model);
+	//	shader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	//	shader.setVec3("diffuseColor", 0.5f, 0.8f, 0.2f);
+	//	shader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	//	my_cilindro.render();	//Base Carrusel
 
 	model = glm::mat4(1.0f);
 	drawModelosCarrusel(Modelshader, modelo1);
+}
+
+void displayScene(Shader shader, Model modelo1, Model modelo2, Model modelo3) {
+	shader.use();
+
+	// create transformations and Projection
+	glm::mat4 tmp = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
+	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
+	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
+
+	//Use "projection" to include Camera
+	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	view = camera.GetViewMatrix();
+
+	// pass them to the shaders
+	shader.setMat4("model", model);
+	shader.setMat4("view", view);
+	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+	shader.setMat4("projection", projection);
+
+
+	model = glm::translate(model, glm::vec3(-2.0f, -4.5f, 1.0f));
+	model = glm::scale(model, glm::vec3(0.04f, 0.04f, 0.04f));
+	shader.setMat4("model", model);
+
+	modelo1.Draw(shader);
 }
 
 int main()
@@ -2200,8 +2253,18 @@ int main()
 	Shader projectionShader("shaders/shader_light.vs", "shaders/shader_light.fs"); //PARA PRIMITIVAS
 
 	// Load models
-	Model Model1 =((char *)"Models/tierra/Earth.obj");
+	Model Model1 = ((char *)"Models/tierra/Earth.obj");
 	Model Model2 = ((char *)"Models/pista.obj");
+	Model Model3 = ((char *)"Models/arbol/arbol.obj");
+	Model Model4 = ((char *)"Models/banca/banca.obj");
+	Model Model5 = ((char *)"Models/basura/basura.obj");
+	Model Model6 = ((char *)"Models/barda/barda.obj");
+	Model Model7 = ((char *)"Models/caballo/caballo.obj");
+	Model Model8 = ((char *)"Models/luz_dual/luz_dual.obj");
+	Model Model9 = ((char *)"Models/luz_quad/luz_quad.obj");
+	Model Model10 = ((char *)"Models/luz_simple/luz_simple.obj");
+	Model Model11 = ((char *)"Models/arco/arco.obj");
+	//Model Model = ((char *)"Models/.obj");
 
     
 	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
@@ -2228,7 +2291,8 @@ int main()
 
 		display(modelShader, Model1, Model2);
 		displayRoallingCoaster(projectionShader);
-		displayCarrousell(projectionShader, modelShader, Model1);
+		displayCarrousell(projectionShader, modelShader, Model7);
+		//displayScene(modelShader, Model12, Model10, Model11);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------

@@ -1,20 +1,17 @@
-﻿  cilindro.cpp
-c:\users\israel\documents\repos git\feriavirtual\proyfinal\proyfinal\cilindro.cpp(33): warning C4305: '=': truncamiento de 'double' a 'GLfloat'
-c:\users\israel\documents\repos git\feriavirtual\proyfinal\proyfinal\cilindro.cpp(39): warning C4305: '=': truncamiento de 'double' a 'GLfloat'
-  main_10.cpp
-c:\users\israel\documents\repos git\feriavirtual\proyfinal\proyfinal\main_10.cpp(393): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-c:\users\israel\documents\repos git\feriavirtual\proyfinal\proyfinal\main_10.cpp(397): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-c:\users\israel\documents\repos git\feriavirtual\proyfinal\proyfinal\main_10.cpp(400): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-c:\users\israel\documents\repos git\feriavirtual\proyfinal\proyfinal\main_10.cpp(404): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-c:\users\israel\documents\repos git\feriavirtual\proyfinal\proyfinal\main_10.cpp(434): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-c:\users\israel\documents\repos git\feriavirtual\proyfinal\proyfinal\main_10.cpp(441): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-  toroide.cpp
-c:\users\israel\documents\repos git\feriavirtual\proyfinal\proyfinal\toroide.cpp(33): warning C4305: '=': truncamiento de 'double' a 'GLfloat'
-c:\users\israel\documents\repos git\feriavirtual\proyfinal\proyfinal\toroide.cpp(39): warning C4305: '=': truncamiento de 'double' a 'GLfloat'
-  Generando código...
-LINK : warning LNK4098: la biblioteca predeterminada'MSVCRT' entra en conflicto con otras bibliotecas; use la biblioteca /NODEFAULTLIB:biblioteca
-soil2-debug.lib(etc1_utils.obj) : warning LNK4099: no se encontr¾ PDB 'soil2-debug.pdb' con 'soil2-debug.lib(etc1_utils.obj)' o en 'C:\Users\Israel\Documents\Repos Git\FeriaVirtual\ProyFinal\Debug\soil2-debug.pdb'; se vincularß el objeto sin tener en cuenta informaci¾n de depuraci¾n
-soil2-debug.lib(image_DXT.obj) : warning LNK4099: no se encontr¾ PDB 'soil2-debug.pdb' con 'soil2-debug.lib(image_DXT.obj)' o en 'C:\Users\Israel\Documents\Repos Git\FeriaVirtual\ProyFinal\Debug\soil2-debug.pdb'; se vincularß el objeto sin tener en cuenta informaci¾n de depuraci¾n
-soil2-debug.lib(image_helper.obj) : warning LNK4099: no se encontr¾ PDB 'soil2-debug.pdb' con 'soil2-debug.lib(image_helper.obj)' o en 'C:\Users\Israel\Documents\Repos Git\FeriaVirtual\ProyFinal\Debug\soil2-debug.pdb'; se vincularß el objeto sin tener en cuenta informaci¾n de depuraci¾n
-soil2-debug.lib(SOIL2.obj) : warning LNK4099: no se encontr¾ PDB 'soil2-debug.pdb' con 'soil2-debug.lib(SOIL2.obj)' o en 'C:\Users\Israel\Documents\Repos Git\FeriaVirtual\ProyFinal\Debug\soil2-debug.pdb'; se vincularß el objeto sin tener en cuenta informaci¾n de depuraci¾n
-  ProyFinal.vcxproj -> C:\Users\Israel\Documents\Repos Git\FeriaVirtual\ProyFinal\Debug\ProyFinal.exe
+﻿  main_10.cpp
+d:\escritorio\cgihlab\feriavirtual\proyfinal\proyfinal\esfera.h(16): warning C4005: 'MERIDIANOS': redefinición de macro
+  d:\escritorio\cgihlab\feriavirtual\proyfinal\proyfinal\cilindro.h(13): note: vea la definición anterior de 'MERIDIANOS'
+d:\escritorio\cgihlab\feriavirtual\proyfinal\proyfinal\esfera.h(17): warning C4005: 'PARALELOS': redefinición de macro
+  d:\escritorio\cgihlab\feriavirtual\proyfinal\proyfinal\cilindro.h(14): note: vea la definición anterior de 'PARALELOS'
+d:\escritorio\cgihlab\feriavirtual\proyfinal\proyfinal\toroide.h(13): warning C4005: 'MERIDIANOS': redefinición de macro
+  d:\escritorio\cgihlab\feriavirtual\proyfinal\proyfinal\esfera.h(16): note: vea la definición anterior de 'MERIDIANOS'
+d:\escritorio\cgihlab\feriavirtual\proyfinal\proyfinal\toroide.h(14): warning C4005: 'PARALELOS': redefinición de macro
+  d:\escritorio\cgihlab\feriavirtual\proyfinal\proyfinal\esfera.h(17): note: vea la definición anterior de 'PARALELOS'
+d:\escritorio\cgihlab\feriavirtual\proyfinal\proyfinal\main_10.cpp(1901): warning C4305: '+=': truncamiento de 'double' a 'float'
+d:\escritorio\cgihlab\feriavirtual\proyfinal\proyfinal\main_10.cpp(2333): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+d:\escritorio\cgihlab\feriavirtual\proyfinal\proyfinal\main_10.cpp(2337): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+d:\escritorio\cgihlab\feriavirtual\proyfinal\proyfinal\main_10.cpp(2340): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+d:\escritorio\cgihlab\feriavirtual\proyfinal\proyfinal\main_10.cpp(2344): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+d:\escritorio\cgihlab\feriavirtual\proyfinal\proyfinal\main_10.cpp(2374): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+d:\escritorio\cgihlab\feriavirtual\proyfinal\proyfinal\main_10.cpp(2381): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+  ProyFinal.vcxproj -> D:\Escritorio\CGIHLab\FeriaVirtual\ProyFinal\Debug\ProyFinal.exe
