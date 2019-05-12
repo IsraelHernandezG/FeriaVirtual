@@ -16,7 +16,8 @@
 #include <iostream>
 #include <stdlib.h>
 #include <fstream>
-
+#include <sstream>
+//
 #include "camera.h"
 #include "cilindro.h"
 #include "esfera.h"
@@ -84,7 +85,11 @@ void display(Shader, Model, Model);
 void getResolution(void);
 void animate(void);
 void LoadTextures(void);
+void editarArchivo(string, string);
+string leerArchivo(string,long);
+void creaArchivo(string);
 unsigned int generateTextures(char*, bool);
+void resetElements();
 
 //For Keyboard
 float	movX = 0.0f,
@@ -130,6 +135,8 @@ rotX = 0.0f,
 rotY = 0.0f,
 rotZ = 0.0f;
 
+long contador= 0L;
+
 #define MAX_FRAMES 250
 int i_max_steps = 190;
 int i_curr_steps = 0;
@@ -157,25 +164,84 @@ int playIndex = 0;
 
 void saveFrame(void)
 {
+	string name = "animation.txt";
+	std::string s = "";
+	std::ostringstream strsX,strsY,strsZ,strsRX, strsRY, strsRZ, strs;
 
 	printf("frameindex %d\n", FrameIndex);
 
 	KeyFrame[FrameIndex].posX = posX;
+	strsX << posX;
+	s = strsX.str();
+	editarArchivo(name,s);
 	KeyFrame[FrameIndex].posY = posY;
+	strsY << posY;
+	s = strsY.str();
+	editarArchivo(name,s);
 	KeyFrame[FrameIndex].posZ = posZ;
+	strsZ << posZ;
+	s = strsZ.str();
+	editarArchivo(name,s);
 
 	KeyFrame[FrameIndex].rotX = rotX;
+	strsRX << rotX;
+	s = strsRX.str();
+	editarArchivo(name,s);
 	KeyFrame[FrameIndex].rotY = rotY;
+	strsRY << rotY;
+	s = strsRY.str();
+	editarArchivo(name,s);
 	KeyFrame[FrameIndex].rotZ = rotZ;
-
-	//Guardar en un archivo
+	strsRZ << rotZ;
+	s = strsRZ.str();
+	editarArchivo(name,s);
 
 	FrameIndex++;
+	strs << FrameIndex;
+	s = strs.str();
+	creaArchivo("frames.txt");
+	editarArchivo("frames.txt", s);
 }
 
 void cargaFrames(void) {
-	//Lee de un archivo, los parcea y guarda en el arreglo de Frames
+	//KeyFrame[MAX_FRAMES];
+	FrameIndex = 0;			
+	playIndex = 0;
 
+	string name = "animation.txt";
+	string salida = leerArchivo("frames.txt", 0L);
+	std::string::size_type sz;   // alias of size_t
+	long numFrames = std::stol(salida, &sz);
+
+	long i;
+	for (i = 0; i <= numFrames-1; i++) {
+
+		salida = leerArchivo(name, 6*i);
+		double l_posX = std::stod(salida, &sz);
+		KeyFrame[FrameIndex].posX = l_posX;
+
+		salida = leerArchivo(name, 6*i+1);
+		double l_posY = std::stod(salida, &sz);
+		KeyFrame[FrameIndex].posY = l_posY;
+
+		salida = leerArchivo(name, 6 * i + 2);
+		double l_posZ = std::stod(salida, &sz);
+		KeyFrame[FrameIndex].posZ = l_posZ;
+
+		salida = leerArchivo(name, 6 * i + 3);
+		double l_rotX = std::stod(salida, &sz);
+		KeyFrame[FrameIndex].rotX = l_rotX;
+
+		salida = leerArchivo(name, 6 * i + 4);
+		double l_rotY = std::stod(salida, &sz);
+		KeyFrame[FrameIndex].rotY = l_rotY;
+
+		salida = leerArchivo(name, 6 * i + 5);
+		double l_rotZ = std::stod(salida, &sz);
+		KeyFrame[FrameIndex].rotZ = l_rotZ;
+
+		FrameIndex++;
+	}
 
 }
 
@@ -188,7 +254,6 @@ void resetElements(void)
 	rotX = KeyFrame[0].rotX;
 	rotY = KeyFrame[0].rotY;
 	rotZ = KeyFrame[0].rotZ;
-
 }
 
 void interpolation(void)
@@ -2628,6 +2693,53 @@ void displayScene(Shader shader, Model modelo1, Model modelo2, Model modelo3) {
 	modelo1.Draw(shader);
 }
 
+void creaArchivo(string name) {
+	ofstream fs(name.c_str());
+	fs.close();
+}
+
+string leerArchivo(string name,long numlinea) {
+	ifstream fs(name.c_str(), ios::in);
+	char linea[128];
+	long contador = 0L;
+	if (fs.fail())
+		printf("el fichero no existe\n");
+	else
+		while (!fs.eof()) {
+			fs.getline(linea, sizeof(linea));
+
+			if (numlinea == contador) {
+				//cout << linea << endl;
+				string str(linea);
+				return str;
+				break;
+			}
+			contador++;
+		}
+	fs.close();
+	
+}
+
+void readFile(string name) {
+	ifstream fs(name.c_str(), ios::in);
+	char linea[128];
+	long contador = 0L;
+	if (fs.fail())
+		printf("el fichero no existe\n");
+	else
+		while (!fs.eof()) {
+			fs.getline(linea, sizeof(linea));
+			cout << linea << endl;
+		}
+	fs.close();
+}
+
+void editarArchivo(string name, string contenido) {
+	ofstream fs(name.c_str(), ios::app);
+	fs << contenido << endl;
+	fs.close();
+}
+
 int main()
 {
 	// glfw: initialize and configure
@@ -2667,15 +2779,6 @@ int main()
 
 	glewInit();
 
-	/** Manejo de archivos**/
-	/*Abre el archivo pruieba.txt, si no existe lo crea*/
-	string name = "prueba.txt";
-	string contenido = "linea 1";
-	ofstream fs(name.c_str());
-	fs << contenido << endl;
-	fs.close();
-	/**/
-
 	//Mis funciones
 	//Datos a utilizar
 	LoadTextures();
@@ -2691,7 +2794,7 @@ int main()
 	// Load models
 	Model Model1 = ((char *)"Models/tierra/Earth.obj");
 	Model Model2 = ((char *)"Models/pista.obj");
-	Model Model7 = ((char *)"Models/caballo/caballo.obj");
+	//Model Model7 = ((char *)"Models/caballo/caballo.obj");
 	/*Model Model3 = ((char *)"Models/arbol/arbol.obj");
 	Model Model4 = ((char *)"Models/banca/banca.obj");
 	Model Model5 = ((char *)"Models/basura/basura.obj");
@@ -2791,6 +2894,10 @@ void my_input(GLFWwindow *window)
 		posX -= 0.01f;
 	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
 		posX += 0.01f;
+	if (glfwGetKey(window, GLFW_KEY_PAGE_UP) == GLFW_PRESS)
+		posZ += 0.01f;
+	if (glfwGetKey(window, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS)
+		posZ -= 0.01f;
 	//Movimiento del modelo
 	if (glfwGetKey(window, GLFW_KEY_X))
 	{
@@ -2854,6 +2961,28 @@ void my_input(GLFWwindow *window)
 			glfwWaitEventsTimeout(1.7); //delay para evitar lecturas erroneas del teclado
 		}
 	}
+	//Para vaciar el fichero
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+		creaArchivo("animation.txt");
+		creaArchivo("frames.txt");
+		glfwWaitEventsTimeout(1.7);
+	}
+		
+	//Para todo leer el fichero
+	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
+		readFile("animation.txt");
+		//cargaFrames();
+		glfwWaitEventsTimeout(1.7);
+	}
+
+	//Para todo leer el fichero
+	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) {
+		cargaFrames();
+		glfwWaitEventsTimeout(1.7);
+	}
+
+
+		
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
