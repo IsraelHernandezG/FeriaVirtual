@@ -4,7 +4,7 @@
 /*- Computación gráfica e interacción humano computadora -*/
 /*-------------------- Grupo 04 --------------------------*/
 /*-------------------- Alumnos: --------------------------*/
-/*-------------- Esparza Luis Mauricio -------------------*/
+/*----------- Esparza Vázquez Luis Mauricio --------------*/
 /*------------- Hernández García Israel ------------------*/
 
 
@@ -112,13 +112,10 @@ t_toalla,
 t_unam,
 t_graf,
 t_white,
-t_panda,
-t_panda_base,
-t_cubo,
 t_ladrillo,
 t_caja,
 t_caja_brillo,
-t_carpa,
+t_domo,
 t_red;
 
 //For carrusel
@@ -268,7 +265,7 @@ void interpolation(void)
 
 }
 
-unsigned int generateTextures(const char* filename, bool alfa)
+unsigned int generateTextures(const char* filename, bool alfa, string name)
 {
 	unsigned int textureID;
 	glGenTextures(1, &textureID);
@@ -295,7 +292,7 @@ unsigned int generateTextures(const char* filename, bool alfa)
 	}
 	else
 	{
-		std::cout << "Failed to load texture" << std::endl;
+		std::cout << "Failed to load texture " + name << std::endl;
 		return 100;
 	}
 
@@ -317,18 +314,15 @@ void getResolution()
 void LoadTextures()
 {
 
-	t_smile = generateTextures("Texturas/awesomeface.png", 1);
-	t_toalla = generateTextures("Texturas/toalla.tga", 0);
-	t_unam = generateTextures("Texturas/escudo_unam.png", 1);
-	t_graf = generateTextures("Texturas/texturaMadera.png", 1);
-	t_panda = generateTextures("Texturas/Panda_01.png", 1);
-	t_panda_base = generateTextures("Texturas/Panda00.jpg", 0);
-	t_caja = generateTextures("Texturas/caja.png", 1);
-	t_caja_brillo = generateTextures("Texturas/caja_specular.png", 1);
-	t_ladrillo = generateTextures("Texturas/bricks.jpg", 0);
-	t_red = generateTextures("Texturas/red.jpg", 0);
-	t_white = generateTextures("Texturas/white.jpg", 0);
-	t_carpa = generateTextures("Texturas/carpa.png", 1);
+	t_smile = generateTextures("Texturas/awesomeface.png", 1, "smile");
+	t_toalla = generateTextures("Texturas/toalla.tga", 0, "toalla");
+	t_unam = generateTextures("Texturas/escudo_unam.png", 1, "unam");
+	t_caja = generateTextures("Texturas/caja.png", 1, "caja");
+	t_caja_brillo = generateTextures("Texturas/caja_specular.png", 1, "caja especular");
+	t_ladrillo = generateTextures("Texturas/bricks.jpg", 0, "ladrillos");
+	t_red =	 generateTextures("Texturas/red.jpg", 0, "rojo");
+	t_white = generateTextures("Texturas/white.jpg", 0, "blanco");
+	t_domo = generateTextures("Texturas/domo.jpg", 0, "domo");
 	// bind textures on corresponding texture units
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -339,22 +333,17 @@ void LoadTextures()
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, t_unam);
 	glActiveTexture(GL_TEXTURE4);
-	glBindTexture(GL_TEXTURE_2D, t_white);
+	glBindTexture(GL_TEXTURE_2D, t_domo);
 	glActiveTexture(GL_TEXTURE5);
-	glBindTexture(GL_TEXTURE_2D, t_panda);
-	glActiveTexture(GL_TEXTURE6);
-	glBindTexture(GL_TEXTURE_2D, t_panda_base);
-	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, t_caja);
-	glActiveTexture(GL_TEXTURE8);
+	glActiveTexture(GL_TEXTURE6);
 	glBindTexture(GL_TEXTURE_2D, t_caja_brillo);
-	glActiveTexture(GL_TEXTURE9);
+	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, t_ladrillo);
-	glActiveTexture(GL_TEXTURE10);
+	glActiveTexture(GL_TEXTURE8);
 	glBindTexture(GL_TEXTURE_2D, t_red);
-	glActiveTexture(GL_TEXTURE11);
-	glBindTexture(GL_TEXTURE_2D, t_carpa);
-
+	glActiveTexture(GL_TEXTURE9);
+	glBindTexture(GL_TEXTURE_2D, t_white);
 }
 
 void myData()
@@ -438,10 +427,10 @@ void myData()
 		0.0f, 1.5f, 0.0f,			0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//4
 		-0.23f, 0.0f, -0.42f,		0.0f,  0.0f, 1.0f,	 0.0f, 0.0f,//5
 		0.0f, 0.0f, -0.48f,			0.0f,  0.0f, 1.0f,	 1.0f, 1.0f,//6
-		0.25f, 0.0f, 0.42f,			0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//7
+		0.25f, 0.0f, -0.42f,			0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//7
 
 		0.0f, 1.5f, 0.0f,			0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//8
-		0.25f, 0.0f, 0.42f,			0.0f,  0.0f, 1.0f,	 0.0f, 0.0f,//9
+		0.25f, 0.0f, -0.42f,			0.0f,  0.0f, 1.0f,	 0.0f, 0.0f,//9
 		0.43f, 0.0f, -0.24f,		0.0f,  0.0f, 1.0f,	 1.0f, 1.0f,//10
 		0.49f, 0.0f, 0.0f,			0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//11
 
@@ -857,14 +846,15 @@ void drawDomoCarrusel(Shader projectionShader) {
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 0.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
-	lightingShader.setInt("material_diffuse", t_carpa);
+	lightingShader.setInt("material_diffuse", t_caja);
 
 
 	model = modelDomo;
-	//model = glm::translate(model, glm::vec3(16.0f, -1.0f, 10.0f)); //Centro del carrusel
-	model = glm::scale(model, glm::vec3(3.5f, 3.5f, 3.5f));
+	model = glm::translate(model, glm::vec3(16.0f, -3.0f, 10.0f)); //Centro del carrusel
+	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(7.2f, 1.4f, 7.2f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 48, 20);
+	glDrawArrays(GL_QUADS, 48, 24);
 
 }
 
