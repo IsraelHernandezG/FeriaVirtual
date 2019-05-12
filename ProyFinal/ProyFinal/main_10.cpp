@@ -108,16 +108,16 @@ colorGB = 0.898f;
 
 //textures
 unsigned int	t_smile,
-t_toalla,
-t_unam,
-t_graf,
-t_white,
-t_ladrillo,
-t_caja,
-t_caja_brillo,
-t_domo,
-t_red,
-t_bush;
+				t_toalla,
+				t_unam,
+				t_white,
+				t_ladrillo,
+				t_caja,
+				t_caja_brillo,
+				t_domo,
+				t_red,
+				t_bush,
+				t_bush2;
 
 //For carrusel
 float	animTubos = 0.0f,
@@ -318,13 +318,14 @@ void LoadTextures()
 	t_smile = generateTextures("Texturas/awesomeface.png", 1, "smile");
 	t_toalla = generateTextures("Texturas/toalla.tga", 0, "toalla");
 	t_unam = generateTextures("Texturas/escudo_unam.png", 1, "unam");
+	t_domo = generateTextures("Texturas/domo.jpg", 0, "domo");
 	t_caja = generateTextures("Texturas/caja.png", 1, "caja");
 	t_caja_brillo = generateTextures("Texturas/caja_specular.png", 1, "caja especular");
 	t_ladrillo = generateTextures("Texturas/bricks.jpg", 0, "ladrillos");
 	t_red =	 generateTextures("Texturas/red.jpg", 0, "rojo");
 	t_white = generateTextures("Texturas/white.jpg", 0, "blanco");
-	t_domo = generateTextures("Texturas/domo.jpg", 0, "domo");
 	t_bush = generateTextures("Texturas/bush.jpg", 0, "bush");
+	t_bush2 = generateTextures("Texturas/bush2.jpg", 0, "bush2");
 	// bind textures on corresponding texture units
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -348,41 +349,44 @@ void LoadTextures()
 	glBindTexture(GL_TEXTURE_2D, t_white);
 	glActiveTexture(GL_TEXTURE10);
 	glBindTexture(GL_TEXTURE_2D, t_bush);
+	glActiveTexture(GL_TEXTURE11);
+	glBindTexture(GL_TEXTURE_2D, t_bush2);
 }
 
 void myData()
 {	
 	float vertices[] = {
 		// positions          // normals           // texture coords
+		//trasera
 		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,//0
 		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,//1
 		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,//2
 		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,//3
-
+		//frontal
 		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,//4
 		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,//5
 		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,//6
 		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,//7
-
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,//11
-
-		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,//15
-
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
-
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,//23
+		//izquierda
+		-0.5f,  0.5f,  0.5f, 0.0f,  -1.0f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f, 0.0f,  -1.0f,  0.0f,  1.0f,  1.0f,
+		-0.5f, -0.5f, -0.5f, 0.0f,  -1.0f,  0.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f,  0.5f, 0.0f,  -1.0f,  0.0f,  0.0f,  0.0f,//11
+		//derecha			 
+		 0.5f,  0.5f,  0.5f, 0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f, -0.5f, 0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
+		 0.5f, -0.5f, -0.5f, 0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+		 0.5f, -0.5f,  0.5f, 0.0f,  1.0f,  0.0f,  0.0f,  0.0f,//15
+		 //inferior
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,  -1.0f,  0.0f,  1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, 0.0f,  -1.0f,  1.0f,  1.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,  -1.0f,  1.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,  -1.0f,  0.0f,  0.0f,
+		//superior
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,//23
 
 
 		//////Segunda caja
@@ -431,10 +435,10 @@ void myData()
 		0.0f, 1.5f, 0.0f,			0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//4
 		-0.23f, 0.0f, -0.42f,		0.0f,  0.0f, 1.0f,	 0.0f, 0.0f,//5
 		0.0f, 0.0f, -0.48f,			0.0f,  0.0f, 1.0f,	 1.0f, 1.0f,//6
-		0.25f, 0.0f, -0.42f,			0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//7
+		0.25f, 0.0f, -0.42f,		0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//7
 
 		0.0f, 1.5f, 0.0f,			0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//8
-		0.25f, 0.0f, -0.42f,			0.0f,  0.0f, 1.0f,	 0.0f, 0.0f,//9
+		0.25f, 0.0f, -0.42f,		0.0f,  0.0f, 1.0f,	 0.0f, 0.0f,//9
 		0.43f, 0.0f, -0.24f,		0.0f,  0.0f, 1.0f,	 1.0f, 1.0f,//10
 		0.49f, 0.0f, 0.0f,			0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//11
 
@@ -452,6 +456,12 @@ void myData()
 		-0.23f, 0.0f, 0.42f,		0.0f,  0.0f, 1.0f,	 0.0f, 0.0f,//21
 		-0.41f, 0.0f, 0.24f,		0.0f,  0.0f, 1.0f,	 1.0f, 1.0f,//22
 		-0.48f, 0.0f, 0.0f,			0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//23
+
+		//superior#2
+		-0.5f, 0.5f, -0.5f,	0.0f, 0.0f, 1.0f,	0.0f, 30.0f,//72
+		0.5f, 0.5f, -0.5f,	0.0f, 0.0f, 1.0f,	30.0f, 30.0f,//73
+		0.5f, 0.5f, 0.5f,	0.0f, 0.0f, 1.0f,	30.0f, 0.0f,//74
+		-0.5f, 0.5f, 0.5f,	0.0f, 0.0f, 1.0f,	0.0f, 0.0f,//75
 
 	};
 	unsigned int indices[] = {
@@ -852,7 +862,7 @@ void drawDomoCarrusel(Shader projectionShader) {
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 0.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
-	lightingShader.setInt("material_diffuse", t_caja);
+	lightingShader.setInt("material_diffuse", t_domo);
 
 
 	model = modelDomo;
@@ -866,7 +876,6 @@ void drawDomoCarrusel(Shader projectionShader) {
 
 //Función para trazar el carrito de la montaña rusa
 void drawVagon(Shader projectionShader) {
-
 	projectionShader.use();
 	projectionShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 	projectionShader.setVec3("lightPos", lightPos);
@@ -969,13 +978,184 @@ void drawVagon(Shader projectionShader) {
 }
 
 //Funcion para trazar el suelo donde yace la feria
-void drawEnvironment(Shader shader) {
+void displayEnvironment() {
+	Shader lightingShader("shaders/shader_texture_light_dir.vs", "shaders/shader_texture_light_dir.fs"); //Directional
+	lightingShader.use();
+	lightingShader.setVec3("light.direction", lightDirection);
+	lightingShader.setVec3("viewPos", camera.Position);
+
+	// light properties
+	lightingShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+	lightingShader.setVec3("light.diffuse", 0.8f, 0.8f, 0.8f);
+	lightingShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+	//For Positional and Spotlight
+	lightingShader.setFloat("light.constant", 1.0f);
+	lightingShader.setFloat("light.linear", 0.09f);
+	lightingShader.setFloat("light.quadratic", 0.032f);
+
+	// material properties
+	lightingShader.setFloat("material_shininess", 32.0f);
+
+	// create transformations and Projection
+	glm::mat4 temp = glm::mat4(1.0f);
+	glm::mat4 temp2 = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
+	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
+	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
+
+	//Use "projection" to include Camera
+	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	view = camera.GetViewMatrix();
+
+	// pass them to the shaders
+	//lightingShader.setVec3("viewPos", camera.Position);
+	lightingShader.setMat4("model", model);
+	lightingShader.setMat4("view", view);
+	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+	lightingShader.setMat4("projection", projection);
+
+
+	glBindVertexArray(VAO);
+	//Colocar código aquí
+	lightingShader.setVec3("ambientColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setInt("material_diffuse", t_ladrillo);
+
+	model = glm::translate(model, glm::vec3(0.0f, -6.6f, -25.0f));
+	model = glm::scale(model, glm::vec3(50.0f, 1.0f, 40.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 72, 4); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
 
 }
 
 //Funcion para dibujar los arbustos
-void drawBushes(Shader shader){
+void displayBushes(){
+	Shader lightingShader("shaders/shader_texture_light_dir.vs", "shaders/shader_texture_light_dir.fs"); //Directional
+	lightingShader.use();
+	lightingShader.setVec3("light.direction", lightDirection);
+	lightingShader.setVec3("viewPos", camera.Position);
 
+	// light properties
+	lightingShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+	lightingShader.setVec3("light.diffuse", 0.8f, 0.8f, 0.8f);
+	lightingShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+	//For Positional and Spotlight
+	lightingShader.setFloat("light.constant", 1.0f);
+	lightingShader.setFloat("light.linear", 0.09f);
+	lightingShader.setFloat("light.quadratic", 0.032f);
+
+	// material properties
+	lightingShader.setFloat("material_shininess", 32.0f);
+
+	// create transformations and Projection
+	glm::mat4 temp = glm::mat4(1.0f);
+	glm::mat4 temp2 = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
+	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
+	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
+
+	//Use "projection" to include Camera
+	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	view = camera.GetViewMatrix();
+
+	// pass them to the shaders
+	//lightingShader.setVec3("viewPos", camera.Position);
+	lightingShader.setMat4("model", model);
+	lightingShader.setMat4("view", view);
+	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+	lightingShader.setMat4("projection", projection);
+
+
+	glBindVertexArray(VAO);
+	//Colocar código aquí
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 0.0f, 1.0f, 0.0f);
+	lightingShader.setVec3("specularColor", 0.0f, 1.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", t_bush);
+
+	
+	model = glm::translate(model, glm::vec3(5.0f, -5.5f, -5.5f));
+	model = glm::scale(model, glm::vec3(1.0f, 0.8f, 0.5f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	temp = model;
+
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
 }
 
 //Función de trazo de la montaña rusa
@@ -1006,7 +1186,7 @@ void displayRoallingCoaster(Shader shader) {
 
 	modelMR = glm::mat4(1.0f);
 	model = modelMR;
-	model = glm::translate(model, glm::vec3(0.78f, -4.5f, 0.0f));
+	model = glm::translate(model, glm::vec3(0.78f, -4.5f, -20.0f)); //Pegué tu montaña rusa un poco más al suelo y la desplazé más al fondo para que se vea completa al ejecutar.
 	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
 	modelMR = model;
 	drawSegment(temp);
@@ -2502,8 +2682,8 @@ void drawModel(Shader shader, Model modelo1, int id) //con int id, agregamos un 
 		modelo1.Draw(shader);
 		break;
 	case 2: //La primer lámpara cuádruple que va a un lado del carrusel
-		model = glm::translate(model, glm::vec3(10.0f, -4.5f, -1.0f));
-		model = glm::scale(model, glm::vec3(0.0025f, 0.0025f, 0.0025f));
+		model = glm::translate(model, glm::vec3(11.0f, -5.5f, -15.0f));
+		model = glm::scale(model, glm::vec3(0.0035f, 0.0035f, 0.0035f));
 		shader.setMat4("model", model);
 		modelo1.Draw(shader);
 		break;
@@ -2536,7 +2716,12 @@ void drawModel(Shader shader, Model modelo1, int id) //con int id, agregamos un 
 		shader.setMat4("model", model); 
 		modelo1.Draw(shader);
 		break;
-
+	case 6: //La primer lámpara cuádruple que va a un lado del carrusel
+		model = glm::translate(model, glm::vec3(11.0f, -5.5f, -20.0f));
+		model = glm::scale(model, glm::vec3(0.0035f, 0.0035f, 0.0035f));
+		shader.setMat4("model", model);
+		modelo1.Draw(shader);
+		break;
 	}
 
 }
@@ -2912,9 +3097,10 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 void displayObjects(Shader shader, Model modelTierra, Model modelPista, /*Model modelArbol, Model modelBanca, Model modelBasura, Model modelBarda,*/ Model modelCaballo, /*Model modelLuz2,*/ Model modelLuz4/*, Model modelLuz1, Model modelEntrada*/) {
 	shader.use();
 
-	//drawModelos(shader, modelCaballo, 1);
-	drawModel(shader, modelLuz4, 2);
-
+	if (modelSwitch) {
+		drawModel(shader, modelLuz4, 2);
+		drawModel(shader, modelLuz4, 6);
+	}
 }
 
 void creaArchivo(string name) {
@@ -3053,11 +3239,14 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		display(modelShader, modelTierra, modelPista);
-		//displayRoallingCoaster(projectionShader);
-		//drawVagon(projectionShader);
+		displayRoallingCoaster(projectionShader);
+		drawVagon(projectionShader);
 		diplayElemCielo();
 		displayCarrousell(projectionShader, modelShader, modelCaballo);
 		displayObjects(modelShader, modelTierra, modelPista, /*modelArbol, modelBanca, modelBasura, modelBarda,*/ modelCaballo, /*modelLuz2,*/ modelLuz4/*, modelLuz1, modelEntrada*/);
+		displayEnvironment();
+		displayBushes();
+
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
