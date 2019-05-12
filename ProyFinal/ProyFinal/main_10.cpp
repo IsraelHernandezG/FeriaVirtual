@@ -116,7 +116,8 @@ t_ladrillo,
 t_caja,
 t_caja_brillo,
 t_domo,
-t_red;
+t_red,
+t_bush;
 
 //For carrusel
 float	animTubos = 0.0f,
@@ -323,6 +324,7 @@ void LoadTextures()
 	t_red =	 generateTextures("Texturas/red.jpg", 0, "rojo");
 	t_white = generateTextures("Texturas/white.jpg", 0, "blanco");
 	t_domo = generateTextures("Texturas/domo.jpg", 0, "domo");
+	t_bush = generateTextures("Texturas/bush.jpg", 0, "bush");
 	// bind textures on corresponding texture units
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -344,6 +346,8 @@ void LoadTextures()
 	glBindTexture(GL_TEXTURE_2D, t_red);
 	glActiveTexture(GL_TEXTURE9);
 	glBindTexture(GL_TEXTURE_2D, t_white);
+	glActiveTexture(GL_TEXTURE10);
+	glBindTexture(GL_TEXTURE_2D, t_bush);
 }
 
 void myData()
@@ -723,6 +727,7 @@ void display(Shader shader, Model modelo1, Model ground)
 	//modelo1.Draw(shader);
 }
 
+//Primitiva de un riel para la montaña rusa
 void drawSegment(Shader projectionShader) {
 
 	projectionShader.use();
@@ -807,6 +812,7 @@ void drawSegment(Shader projectionShader) {
 	
 }
 
+//Función de trazo para el domo del carrusel
 void drawDomoCarrusel(Shader projectionShader) {
 	Shader lightingShader("shaders/shader_texture_light_dir.vs", "shaders/shader_texture_light_dir.fs"); //Directional
 
@@ -850,7 +856,7 @@ void drawDomoCarrusel(Shader projectionShader) {
 
 
 	model = modelDomo;
-	model = glm::translate(model, glm::vec3(16.0f, -3.0f, 10.0f)); //Centro del carrusel
+	model = glm::translate(model, glm::vec3(16.0f, -3.0f, -20.0f)); //Centro del carrusel
 	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(7.2f, 1.4f, 7.2f));
 	lightingShader.setMat4("model", model);
@@ -858,6 +864,7 @@ void drawDomoCarrusel(Shader projectionShader) {
 
 }
 
+//Función para trazar el carrito de la montaña rusa
 void drawVagon(Shader projectionShader) {
 
 	projectionShader.use();
@@ -961,6 +968,17 @@ void drawVagon(Shader projectionShader) {
 
 }
 
+//Funcion para trazar el suelo donde yace la feria
+void drawEnvironment(Shader shader) {
+
+}
+
+//Funcion para dibujar los arbustos
+void drawBushes(Shader shader){
+
+}
+
+//Función de trazo de la montaña rusa
 void displayRoallingCoaster(Shader shader) {
 
 	Shader temp = shader;
@@ -2446,6 +2464,7 @@ void displayRoallingCoaster(Shader shader) {
 
 }
 
+//Variables que delimitan la velocidad de animacion del carrusel
 void startCarrouselSpin() {
 	
 	animTubos += 0.5;
@@ -2454,6 +2473,7 @@ void startCarrouselSpin() {
 
 }
 
+//Función de dibujo de .obj
 void drawModel(Shader shader, Model modelo1, int id) //con int id, agregamos un case al switch y así modificamos ahí individualmente los parámetros de dibujo
 {
 	shader.use();
@@ -2472,15 +2492,13 @@ void drawModel(Shader shader, Model modelo1, int id) //con int id, agregamos un 
 
 	switch (id) {
 	case 1: //El primer caballo del carrusel
-		model = glm::translate(model, glm::vec3(16.0f, -4.5f, 10.0f)); //Centro del carrusel
-
+		model = glm::translate(model, glm::vec3(16.0f, -4.5f, -20.0f)); //Centro del carrusel
 		model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro al rededor del centro
-		model = glm::translate(model, glm::vec3(2.5f, (sin(movModelos) / 4) - 0.5f, 0.0f)); //Movimiento de subir y bajar y colocar en tubo
+		model = glm::translate(model, glm::vec3(2.5f, (1.5 * sin(movModelos) / 4) - 0.5f, 0.0f)); //Movimiento de subir y bajar y colocar en tubo
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); //Enderezar el modelo del caballo para que quede de pie
 		model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f)); //Ajuste de posicion para que vea hacia enfrente
 		model = glm::scale(model, glm::vec3(0.04f, 0.04f, 0.04f)); //Ajustar el tamaño del modelo caballo
 		shader.setMat4("model", model);
-
 		modelo1.Draw(shader);
 		break;
 	case 2: //La primer lámpara cuádruple que va a un lado del carrusel
@@ -2490,18 +2508,18 @@ void drawModel(Shader shader, Model modelo1, int id) //con int id, agregamos un 
 		modelo1.Draw(shader);
 		break;
 	case 3:
-		model = glm::translate(model, glm::vec3(16.0f, -4.5f, 10.0f)); //Centro del carrusel
+		model = glm::translate(model, glm::vec3(16.0f, -4.5f, -20.0f)); //Centro del carrusel
 		model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro al rededor del centro
-		model = glm::translate(model, glm::vec3(-2.5f, (sin(movModelos + 90) / 4) - 0.5f, 0.0f)); //Movimiento de subir y bajar y colocar en tubo
+		model = glm::translate(model, glm::vec3(-2.5f, (1.5 * sin(movModelos + 90) / 4) - 0.7f, 0.0f)); //Movimiento de subir y bajar y colocar en tubo
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); //Enderezar el modelo del caballo para que quede de pie
 		model = glm::scale(model, glm::vec3(0.04f, 0.04f, 0.04f)); //Ajustar el tamaño del modelo caballo
 		shader.setMat4("model", model);
 		modelo1.Draw(shader);
 		break;
 	case 4:
-		model = glm::translate(model, glm::vec3(16.0f, -4.5f, 10.0f)); //Centro del carrusel
+		model = glm::translate(model, glm::vec3(16.0f, -4.5f, -20.0f)); //Centro del carrusel
 		model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro al rededor del centro
-		model = glm::translate(model, glm::vec3(0.0f, (sin(movModelos) / 4) - 0.5f, 2.5f)); //Movimiento de subir y bajar y colocar en tubo
+		model = glm::translate(model, glm::vec3(0.0f, (1.5 * sin(movModelos + 45) / 4) - 0.7f, 2.5f)); //Movimiento de subir y bajar y colocar en tubo
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); //Enderezar el modelo del caballo para que quede de pie
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f)); //Ajuste de posicion para que vea hacia enfrente
 		model = glm::scale(model, glm::vec3(0.04f, 0.04f, 0.04f)); //Ajustar el tamaño del modelo caballo
@@ -2509,21 +2527,22 @@ void drawModel(Shader shader, Model modelo1, int id) //con int id, agregamos un 
 		modelo1.Draw(shader);
 		break;
 	case 5:
-		model = glm::translate(model, glm::vec3(16.0f, -4.5f, 10.0f)); //Centro del carrusel
+		model = glm::translate(model, glm::vec3(16.0f, -4.5f, -20.0f)); //Centro del carrusel
 		model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro al rededor del centro
-		model = glm::translate(model, glm::vec3(0.0f, (sin(movModelos + 90) / 4) - 0.5f, -2.5f)); //Movimiento de subir y bajar y colocar en tubo
+		model = glm::translate(model, glm::vec3(0.0f, (1.5 * sin(movModelos + 135) / 4) - 0.7f, -2.5f)); //Movimiento de subir y bajar y colocar en tubo
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); //Enderezar el modelo del caballo para que quede de pie
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f)); //Ajuste de posicion para que vea hacia enfrente
 		model = glm::scale(model, glm::vec3(0.04f, 0.04f, 0.04f)); //Ajustar el tamaño del modelo caballo
 		shader.setMat4("model", model); 
 		modelo1.Draw(shader);
-
 		break;
 
 	}
 
 }
 
+//Función vieja para dibujo de .obj
+/*
 void drawModelosCarrusel(Shader shader, Model modelo1) //Creo una funcion duplicado "drawModel" con identificador, para dibujar objetos con una sola funcion.
 {
 	shader.use();
@@ -2554,8 +2573,9 @@ void drawModelosCarrusel(Shader shader, Model modelo1) //Creo una funcion duplic
 	shader.setMat4("model", model);
 
 	modelo1.Draw(shader);
-}
+}*/
 
+//Función para trazar el carrusel
 void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 
 	shader.use();
@@ -2595,7 +2615,7 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 //	modelMR = model;
 
 //Centro del carrusel
-	model = glm::translate(model, glm::vec3(16.0f, -4.5f, 10.0f));
+	model = glm::translate(model, glm::vec3(16.0f, -4.5f, -20.0f));
 	tmp = model;
 	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -2888,6 +2908,7 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 }
 
 //Dentro de ésta funcion mandamos a llamar a drawModelos con el modelo que queramos y un id creciente; dentro de esa función modificamos los parámetros de dibujo.
+//Funcion que recibe todos nuestros modelos y los manda a dibujar tantas veces como queramos
 void displayObjects(Shader shader, Model modelTierra, Model modelPista, /*Model modelArbol, Model modelBanca, Model modelBasura, Model modelBarda,*/ Model modelCaballo, /*Model modelLuz2,*/ Model modelLuz4/*, Model modelLuz1, Model modelEntrada*/) {
 	shader.use();
 
