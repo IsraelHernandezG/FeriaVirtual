@@ -54,13 +54,7 @@ glm::mat4 modelMR = glm::mat4(1.0f);
 glm::mat4 modelEarth = glm::mat4(1.0f);
 glm::mat4 modelVagon = glm::mat4(1.0f);
 glm::mat4 modelHorse = glm::mat4(1.0f);
-glm::mat4 modelSingleLamp = glm::mat4(1.0f);
-glm::mat4 modelDoubleLamp = glm::mat4(1.0f);
-glm::mat4 modelQuadLamp = glm::mat4(1.0f);
-glm::mat4 modelFence = glm::mat4(1.0f);
-glm::mat4 modelBush = glm::mat4(1.0f);
-glm::mat4 modelArch = glm::mat4(1.0f);
-glm::mat4 modelGarbage = glm::mat4(1.0f);
+glm::mat4 modelDomo = glm::mat4(1.0f);
 
 //Camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -97,6 +91,7 @@ movY = 0.0f,
 movZ = -5.0f;
 
 bool play = false,
+	modelSwitch = false,
 	horseOn = false;
 
 //For model
@@ -122,7 +117,9 @@ t_panda_base,
 t_cubo,
 t_ladrillo,
 t_caja,
-t_caja_brillo;
+t_caja_brillo,
+t_carpa,
+t_red;
 
 //For carrusel
 float	animTubos = 0.0f,
@@ -323,12 +320,15 @@ void LoadTextures()
 	t_smile = generateTextures("Texturas/awesomeface.png", 1);
 	t_toalla = generateTextures("Texturas/toalla.tga", 0);
 	t_unam = generateTextures("Texturas/escudo_unam.png", 1);
-	t_white = generateTextures("Texturas/texturaMadera.png", 1);
+	t_graf = generateTextures("Texturas/texturaMadera.png", 1);
 	t_panda = generateTextures("Texturas/Panda_01.png", 1);
 	t_panda_base = generateTextures("Texturas/Panda00.jpg", 0);
 	t_caja = generateTextures("Texturas/caja.png", 1);
 	t_caja_brillo = generateTextures("Texturas/caja_specular.png", 1);
 	t_ladrillo = generateTextures("Texturas/bricks.jpg", 0);
+	t_red = generateTextures("Texturas/red.jpg", 0);
+	t_white = generateTextures("Texturas/white.jpg", 0);
+	t_carpa = generateTextures("Texturas/carpa.png", 1);
 	// bind textures on corresponding texture units
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -350,6 +350,10 @@ void LoadTextures()
 	glBindTexture(GL_TEXTURE_2D, t_caja_brillo);
 	glActiveTexture(GL_TEXTURE9);
 	glBindTexture(GL_TEXTURE_2D, t_ladrillo);
+	glActiveTexture(GL_TEXTURE10);
+	glBindTexture(GL_TEXTURE_2D, t_red);
+	glActiveTexture(GL_TEXTURE11);
+	glBindTexture(GL_TEXTURE_2D, t_carpa);
 
 }
 
@@ -357,25 +361,25 @@ void myData()
 {	
 	float vertices[] = {
 		// positions          // normals           // texture coords
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,//0
+		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,//1
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,//2
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,//3
 
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,//4
+		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,//5
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,//6
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,//7
 
 		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
 		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
 		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,//11
 
 		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
 		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
 		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,//15
 
 		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
 		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
@@ -385,7 +389,7 @@ void myData()
 		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
 		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
 		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,//23
 
 
 		//////Segunda caja
@@ -393,7 +397,7 @@ void myData()
 		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
 		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
 		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,//27
 
 		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
 		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
@@ -408,7 +412,7 @@ void myData()
 		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
 		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
 		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,//39
 
 		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
 		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
@@ -418,7 +422,43 @@ void myData()
 		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
 		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
 		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,//47
+
+
+
+
+		 // positions          // normals           // texture coords
+		//////////////Carrusel (Domo)
+	 
+		0.0f, 1.5f, 0.0f,			0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//0
+		-0.48f, 0.0f, 0.0f,			0.0f,  0.0f, 1.0f,	 0.0f, 0.0f,//1
+		-0.41f, 0.0f, -0.24f,		0.0f,  0.0f, 1.0f,	 1.0f, 1.0f,//2
+		-0.23f, 0.0f, -0.42f,		0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//3
+
+		0.0f, 1.5f, 0.0f,			0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//4
+		-0.23f, 0.0f, -0.42f,		0.0f,  0.0f, 1.0f,	 0.0f, 0.0f,//5
+		0.0f, 0.0f, -0.48f,			0.0f,  0.0f, 1.0f,	 1.0f, 1.0f,//6
+		0.25f, 0.0f, 0.42f,			0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//7
+
+		0.0f, 1.5f, 0.0f,			0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//8
+		0.25f, 0.0f, 0.42f,			0.0f,  0.0f, 1.0f,	 0.0f, 0.0f,//9
+		0.43f, 0.0f, -0.24f,		0.0f,  0.0f, 1.0f,	 1.0f, 1.0f,//10
+		0.49f, 0.0f, 0.0f,			0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//11
+
+		0.0f, 1.5f, 0.0f,			0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//12
+		0.49f, 0.0f, 0.0f,			0.0f,  0.0f, 1.0f,	 0.0f, 0.0f,//13
+		0.43f, 0.0f, 0.24f,			0.0f,  0.0f, 1.0f,	 1.0f, 1.0f,//14
+		0.25f, 0.0f, 0.42f,			0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//15
+												 
+		0.0f, 1.5f, 0.0f,			0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//16
+		0.25f, 0.0f, 0.42f,			0.0f,  0.0f, 1.0f,	 0.0f, 0.0f,//17
+		0.0f, 0.0f, 0.48f,			0.0f,  0.0f, 1.0f,	 1.0f, 1.0f,//18
+		-0.23f, 0.0f, 0.42f,		0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//19
+
+		0.0f, 1.5f, 0.0f,			0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//20
+		-0.23f, 0.0f, 0.42f,		0.0f,  0.0f, 1.0f,	 0.0f, 0.0f,//21
+		-0.41f, 0.0f, 0.24f,		0.0f,  0.0f, 1.0f,	 1.0f, 1.0f,//22
+		-0.48f, 0.0f, 0.0f,			0.0f,  0.0f, 1.0f,	 0.5f, 0.5f,//23
 
 	};
 	unsigned int indices[] = {
@@ -776,6 +816,56 @@ void drawSegment(Shader projectionShader) {
 	my_cilindro.render();
 
 	
+}
+
+void drawDomoCarrusel(Shader projectionShader) {
+	Shader lightingShader("shaders/shader_texture_light_dir.vs", "shaders/shader_texture_light_dir.fs"); //Directional
+
+	lightingShader.use();
+	
+	lightingShader.setVec3("light.direction", lightDirection);
+	
+	lightingShader.setVec3("viewPos", camera.Position);
+		// light properties
+	lightingShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+	lightingShader.setVec3("light.diffuse", 0.8f, 0.8f, 0.8f);
+	lightingShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+		//For Positional and Spotlight
+	lightingShader.setFloat("light.constant", 1.0f);
+	lightingShader.setFloat("light.linear", 0.09f);
+	lightingShader.setFloat("light.quadratic", 0.032f);
+		// material properties
+	lightingShader.setFloat("material_shininess", 32.0f);
+		// create transformations and Projection
+	glm::mat4 temp = glm::mat4(1.0f);
+	glm::mat4 temp2 = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
+	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
+	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
+		//Use "projection" to include Camera
+	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	view = camera.GetViewMatrix();
+		// pass them to the shaders
+	//lightingShader.setVec3("viewPos", camera.Position);
+	lightingShader.setMat4("model", model);
+	lightingShader.setMat4("view", view);
+	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+	lightingShader.setMat4("projection", projection);
+
+	glBindVertexArray(VAO);
+	//Colocar código aquí
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 0.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", t_carpa);
+
+
+	model = modelDomo;
+	//model = glm::translate(model, glm::vec3(16.0f, -1.0f, 10.0f)); //Centro del carrusel
+	model = glm::scale(model, glm::vec3(3.5f, 3.5f, 3.5f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 48, 20);
+
 }
 
 void drawVagon(Shader projectionShader) {
@@ -2366,7 +2456,6 @@ void displayRoallingCoaster(Shader shader) {
 
 }
 
-
 void startCarrouselSpin() {
 	
 	animTubos += 0.5;
@@ -2374,7 +2463,6 @@ void startCarrouselSpin() {
 	movModelos += 0.2; //Velocidad con la que suben y bajan los modelos del carrusel en los tubos con ajuste para estar más pegados a la base.
 
 }
-
 
 void drawModel(Shader shader, Model modelo1, int id) //con int id, agregamos un case al switch y así modificamos ahí individualmente los parámetros de dibujo
 {
@@ -2800,13 +2888,13 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 	my_esfera.render();
 
 	model = glm::mat4(1.0f);
-	//drawModelosCarrusel(Modelshader, modelo1);
 	if (horseOn) {
 		drawModel(Modelshader, modelo1, 1); //Función equivalente utilizando la nueva función para evitar el duplicado de código
 		drawModel(Modelshader, modelo1, 3);
 		drawModel(Modelshader, modelo1, 4);
 		drawModel(Modelshader, modelo1, 5);
 	}
+	drawDomoCarrusel(shader);
 }
 
 //Dentro de ésta funcion mandamos a llamar a drawModelos con el modelo que queramos y un id creciente; dentro de esa función modificamos los parámetros de dibujo.
@@ -2954,8 +3042,8 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		display(modelShader, modelTierra, modelPista);
-		displayRoallingCoaster(projectionShader);
-		drawVagon(projectionShader);
+		//displayRoallingCoaster(projectionShader);
+		//drawVagon(projectionShader);
 		diplayElemCielo();
 		displayCarrousell(projectionShader, modelShader, modelCaballo);
 		displayObjects(modelShader, modelTierra, modelPista, /*modelArbol, modelBanca, modelBasura, modelBarda,*/ modelCaballo, /*modelLuz2,*/ modelLuz4/*, modelLuz1, modelEntrada*/);
@@ -3085,6 +3173,7 @@ void my_input(GLFWwindow *window)
 			glfwWaitEventsTimeout(1.7); //delay para evitar lecturas erroneas del teclado
 		}
 	}
+
 	//Para vaciar el fichero
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
 		creaArchivo("animation.txt");
@@ -3105,7 +3194,9 @@ void my_input(GLFWwindow *window)
 		glfwWaitEventsTimeout(1.7);
 	}
 
+	//Para activar/desactivar modelos en el espacio. Desactivados por defecto para acelerar la carga
 	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
+		modelSwitch = !modelSwitch;
 		horseOn = !horseOn;
 	}
 
