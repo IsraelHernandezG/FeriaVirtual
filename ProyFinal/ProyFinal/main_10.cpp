@@ -358,30 +358,30 @@ void myData()
 	float vertices[] = {
 		// positions          // normals           // texture coords
 		//trasera
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,//0
-		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,//1
-		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,//2
-		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,//3
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, 1.0f,  0.0f,  0.0f,//0
+		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, 1.0f,  1.0f,  0.0f,//1
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, 1.0f,  1.0f,  1.0f,//2
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, 1.0f,  0.0f,  1.0f,//3
 		//frontal
 		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,//4
 		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,//5
 		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,//6
 		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,//7
 		//izquierda
-		-0.5f,  0.5f,  0.5f, 0.0f,  -1.0f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f, 0.0f,  -1.0f,  0.0f,  1.0f,  1.0f,
-		-0.5f, -0.5f, -0.5f, 0.0f,  -1.0f,  0.0f,  0.0f,  1.0f,
-		-0.5f, -0.5f,  0.5f, 0.0f,  -1.0f,  0.0f,  0.0f,  0.0f,//11
+		-0.5f,  0.5f,  0.5f, 0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f, 0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+		-0.5f, -0.5f, -0.5f, 0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f,  0.5f, 0.0f,  0.0f,  1.0f,  0.0f,  0.0f,//11
 		//derecha			 
-		 0.5f,  0.5f,  0.5f, 0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f, 0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
-		 0.5f, -0.5f, -0.5f, 0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
-		 0.5f, -0.5f,  0.5f, 0.0f,  1.0f,  0.0f,  0.0f,  0.0f,//15
+		 0.5f,  0.5f,  0.5f, 0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f, -0.5f, 0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+		 0.5f, -0.5f, -0.5f, 0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
+		 0.5f, -0.5f,  0.5f, 0.0f,  0.0f,  1.0f,  0.0f,  0.0f,//15
 		 //inferior
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,  -1.0f,  0.0f,  1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, 0.0f,  -1.0f,  1.0f,  1.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,  -1.0f,  1.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,  -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,  1.0f,  0.0f,  1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, 0.0f,  1.0f,  1.0f,  1.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,  1.0f,  1.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,  1.0f,  0.0f,  0.0f,
 		//superior
 		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
 		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
@@ -1075,87 +1075,672 @@ void displayBushes(){
 	lightingShader.setInt("material_diffuse", t_bush);
 
 	
-	model = glm::translate(model, glm::vec3(5.0f, -5.5f, -5.5f));
+	model = glm::translate(model, glm::vec3(5.0f, -5.65f, -5.5f));
 	model = glm::scale(model, glm::vec3(1.0f, 0.8f, 0.5f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	glDrawArrays(GL_QUADS, 0, 24); 
 	temp = model;
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	glDrawArrays(GL_QUADS, 0, 24); 
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	glDrawArrays(GL_QUADS, 0, 24); 
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	glDrawArrays(GL_QUADS, 0, 24); 
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	glDrawArrays(GL_QUADS, 0, 24); 
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	glDrawArrays(GL_QUADS, 0, 24); 
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	glDrawArrays(GL_QUADS, 0, 24); 
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	glDrawArrays(GL_QUADS, 0, 24); 
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	glDrawArrays(GL_QUADS, 0, 24); 
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	glDrawArrays(GL_QUADS, 0, 24); 
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	glDrawArrays(GL_QUADS, 0, 24); 
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	glDrawArrays(GL_QUADS, 0, 24); 
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	glDrawArrays(GL_QUADS, 0, 24); 
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	glDrawArrays(GL_QUADS, 0, 24); 
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	glDrawArrays(GL_QUADS, 0, 24); 
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	glDrawArrays(GL_QUADS, 0, 24); 
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	glDrawArrays(GL_QUADS, 0, 24); 
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	glDrawArrays(GL_QUADS, 0, 24); 
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	glDrawArrays(GL_QUADS, 0, 24); 
 
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 24); //dibujamos unicamente la parte superior de una caja texturizada con ladrillos para el piso
+	glDrawArrays(GL_QUADS, 0, 24); 
+
+
+	//Arbustos del lado derecho del parque
+	model = glm::translate(model, glm::vec3(0.78f, 0.0f, -0.5f));
+	model = glm::scale(model, glm::vec3(0.5f, 1.0f, 2.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24); 
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+	
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	//Arbustos de atrás
+	model = glm::translate(model, glm::vec3(-1.2f, 0.0f, -0.2f));
+	model = glm::scale(model, glm::vec3(2.0f, 1.0f, 0.5f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	//Arbusto de la izquierda
+	model = glm::translate(model, glm::vec3(-0.3f, 0.0f, 1.0f));
+	model = glm::scale(model, glm::vec3(0.5f, 1.0f, 2.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+
+	glDrawArrays(GL_QUADS, 0, 24);
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	//Arbustos que faltan enfrente
+	model = temp;
+	model = glm::translate(model, glm::vec3(-10.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
 }
 
 //Función de trazo de la montaña rusa
