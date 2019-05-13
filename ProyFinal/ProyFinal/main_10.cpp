@@ -82,7 +82,7 @@ void LoadTextures(void);
 void editarArchivo(string, string);
 string leerArchivo(string,long);
 void creaArchivo(string);
-unsigned int generateTextures(char*, bool);
+unsigned int generateTextures(char*, bool, string);
 void resetElements();
 
 //For Keyboard
@@ -135,7 +135,7 @@ rotZ = 0.0f;
 long contador= 0L;
 
 #define MAX_FRAMES 250
-int i_max_steps = 190;
+int i_max_steps = 10; //i_max_steps = 190
 int i_curr_steps = 0;
 typedef struct _frame
 {
@@ -204,6 +204,8 @@ void cargaFrames(void) {
 	//KeyFrame[MAX_FRAMES];
 	FrameIndex = 0;			
 	playIndex = 0;
+
+	
 
 	string name = "animation.txt";
 	string salida = leerArchivo("frames.txt", 0L);
@@ -638,7 +640,7 @@ void displayCubes()
 	model = glm::translate(model, glm::vec3(posX, posY, posZ));
 	model = glm::rotate(model, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(1.0f, 0.0f, 1.0f));
+	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(0.0f, 0.0f, 1.0f));
 
 	model = glm::translate(model, glm::vec3(0.0f, 0.8f, 0.45f));
 	model = glm::scale(model, glm::vec3(0.8f, 0.6f, 0.05f));
@@ -649,7 +651,7 @@ void displayCubes()
 	model = glm::translate(model, glm::vec3(posX, posY, posZ));
 	model = glm::rotate(model, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(1.0f, 0.0f, 1.0f));
+	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::translate(model, glm::vec3(0.0f, 0.8f, -0.45f));
 	model = glm::scale(model, glm::vec3(0.8f, 0.6f, 0.05f));
 	lightingShader.setMat4("model", model);
@@ -659,7 +661,7 @@ void displayCubes()
 	model = glm::translate(model, glm::vec3(posX, posY, posZ));
 	model = glm::rotate(model, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(1.0f, 0.0f, 1.0f));
+	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::translate(model, glm::vec3(0.0f, 0.8f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.8f, 0.6f, 0.86f));
 	lightingShader.setMat4("model", model);
@@ -669,7 +671,7 @@ void displayCubes()
 	model = glm::translate(model, glm::vec3(posX, posY, posZ));
 	model = glm::rotate(model, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(1.0f, 0.0f, 1.0f));
+	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::translate(model, glm::vec3(0.0f, 0.95f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.8f, 0.9f, 0.86f));
 	lightingShader.setMat4("model", model);
@@ -679,7 +681,7 @@ void displayCubes()
 	model = glm::translate(model, glm::vec3(posX, posY, posZ));
 	model = glm::rotate(model, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(1.0f, 0.0f, 1.0f));
+	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::translate(model, glm::vec3(0.0f, 1.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.8f, 1.0f, 0.86f));
 	lightingShader.setMat4("model", model);
@@ -689,8 +691,8 @@ void displayCubes()
 	model = glm::translate(model, glm::vec3(posX, posY, posZ));
 	model = glm::rotate(model, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(1.0f, 0.0f, 1.0f));
-	model = glm::translate(model, glm::vec3(0.2f, 0.66f, 0.0f));
+	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::translate(model, glm::vec3(0.19f, 0.66f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.4f, 0.3f, 0.84f));
 	lightingShader.setMat4("model", model);
 	glDrawArrays(GL_QUADS, 0, 24);
@@ -764,7 +766,6 @@ void drawSegment(Shader projectionShader) {
 	model = modelMR;
 
 	glBindVertexArray(VAO);
-
 	//Segmento riel
 	//
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
@@ -790,9 +791,6 @@ void drawSegment(Shader projectionShader) {
 	model = glm::translate(model, glm::vec3(0.0f, 2.0f, -4.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 0.6f, 0.6f));
 	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
-	projectionShader.setVec3("diffuseColor", 1.0f, 1.0f, 0.0f);
-	projectionShader.setVec3("specularColor", 0.0f, 0.0f, 1.0f);
 	my_cilindro.render();
 
 	model = tmp;
@@ -814,9 +812,6 @@ void drawSegment(Shader projectionShader) {
 	model = glm::rotate(model, glm::radians(28.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(1.2f, 0.3f, 0.3f));
 	projectionShader.setMat4("model", model);
-	projectionShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
-	projectionShader.setVec3("diffuseColor", 1.0f, 0.0f, 0.0f);
-	projectionShader.setVec3("specularColor", 0.0f, 0.0f, 1.0f);
 	my_cilindro.render();
 
 	
@@ -901,7 +896,7 @@ void drawVagon(Shader projectionShader) {
 	model = glm::translate(model, glm::vec3(posX, posY, posZ));
 	model = glm::rotate(model, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(1.0f, 0.0f, 1.0f));
+	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(0.0f, 0.0f, 1.0f));
 	//vagon
 	model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.5f));
 	model = glm::scale(model, glm::vec3(0.18f, 0.18f, 0.05f));
@@ -915,7 +910,7 @@ void drawVagon(Shader projectionShader) {
 	model = glm::translate(model, glm::vec3(posX, posY, posZ));
 	model = glm::rotate(model, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(1.0f, 0.0f, 1.0f));
+	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::translate(model, glm::vec3(0.0f, 0.5f, -0.5f));
 	model = glm::scale(model, glm::vec3(0.18f, 0.18f, 0.05f));
 	projectionShader.setMat4("model", model);
@@ -925,7 +920,7 @@ void drawVagon(Shader projectionShader) {
 	model = glm::translate(model, glm::vec3(posX, posY, posZ));
 	model = glm::rotate(model, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(1.0f, 0.0f, 1.0f));
+	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.3f, 0.05f, 0.05f));
@@ -940,7 +935,7 @@ void drawVagon(Shader projectionShader) {
 	model = glm::translate(model, glm::vec3(posX, posY, posZ));
 	model = glm::rotate(model, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(1.0f, 0.0f, 1.0f));
+	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::translate(model, glm::vec3(0.2f, 1.2f, -0.35f));
 	model = glm::rotate(model, glm::radians(28.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(0.15f, 0.02f, 0.02f));
@@ -954,7 +949,7 @@ void drawVagon(Shader projectionShader) {
 	model = glm::translate(model, glm::vec3(posX, posY, posZ));
 	model = glm::rotate(model, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(1.0f, 0.0f, 1.0f));
+	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::translate(model, glm::vec3(0.2f, 1.2f, +0.35f));
 	model = glm::rotate(model, glm::radians(30.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(0.15f, 0.02f, 0.02f));
@@ -965,7 +960,7 @@ void drawVagon(Shader projectionShader) {
 	model = glm::translate(model, glm::vec3(posX, posY, posZ));
 	model = glm::rotate(model, glm::radians(rotX), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(rotY), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(1.0f, 0.0f, 1.0f));
+	model = glm::rotate(model, glm::radians(rotZ), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::translate(model, glm::vec3(0.0f, 1.09f, 0.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(0.22f, 0.02f, 0.02f));
@@ -1790,6 +1785,7 @@ void displayRoallingCoaster(Shader shader) {
 	model = modelMR;
 	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
 	modelMR = model;
+	modelVagon = model;
 	drawSegment(temp);
 	model = modelMR;
 	model = glm::translate(model, glm::vec3(0.78f, 0.0f, 0.0f));
@@ -2105,31 +2101,26 @@ void displayRoallingCoaster(Shader shader) {
 	drawSegment(temp);
 	model = modelMR;
 	model = glm::translate(model, glm::vec3(0.78f, 0.05f, 0.0f));
-	//model = glm::rotate(model, glm::radians(-3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(8.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	modelMR = model;
 	drawSegment(temp);
 	model = modelMR;
 	model = glm::translate(model, glm::vec3(0.78f, 0.05f, 0.0f));
-	//model = glm::rotate(model, glm::radians(-3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(8.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	modelMR = model;
 	drawSegment(temp);
 	model = modelMR;
 	model = glm::translate(model, glm::vec3(0.78f, 0.05f, 0.0f));
-	//model = glm::rotate(model, glm::radians(-3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(8.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	modelMR = model;
 	drawSegment(temp);
 	model = modelMR;
 	model = glm::translate(model, glm::vec3(0.78f, 0.05f, 0.0f));
-	//model = glm::rotate(model, glm::radians(-3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(8.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	modelMR = model;
 	drawSegment(temp);
 	model = modelMR;
 	model = glm::translate(model, glm::vec3(0.78f, 0.05f, 0.0f));
-	//model = glm::rotate(model, glm::radians(-3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(8.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	modelMR = model;
 	drawSegment(temp);
@@ -2143,27 +2134,22 @@ void displayRoallingCoaster(Shader shader) {
 	drawSegment(temp);
 	model = modelMR;
 	model = glm::translate(model, glm::vec3(0.74f, -0.05f, 0.0f));
-	//model = glm::rotate(model, glm::radians(-3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(-8.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	modelMR = model;
 	drawSegment(temp);
 	model = glm::translate(model, glm::vec3(0.74f, -0.05f, 0.0f));
-	//model = glm::rotate(model, glm::radians(-3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(-8.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	modelMR = model;
 	drawSegment(temp);
 	model = glm::translate(model, glm::vec3(0.74f, -0.05f, 0.0f));
-	//model = glm::rotate(model, glm::radians(-3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(-8.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	modelMR = model;
 	drawSegment(temp);
 	model = glm::translate(model, glm::vec3(0.74f, -0.05f, 0.0f));
-	//model = glm::rotate(model, glm::radians(-3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(-8.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	modelMR = model;
 	drawSegment(temp);
 	model = glm::translate(model, glm::vec3(0.74f, -0.05f, 0.0f));
-	//model = glm::rotate(model, glm::radians(-3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(-8.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	modelMR = model;
 	drawSegment(temp);
@@ -2259,32 +2245,26 @@ void displayRoallingCoaster(Shader shader) {
 	modelMR = model;
 	drawSegment(temp);//fin giro 180 grados
 	model = glm::translate(model, glm::vec3(0.74f, -0.05f, 0.0f));
-	//model = glm::rotate(model, glm::radians(-3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(-8.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	modelMR = model;
 	drawSegment(temp);
 	model = glm::translate(model, glm::vec3(0.74f, -0.05f, 0.0f));
-	//model = glm::rotate(model, glm::radians(-3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(-8.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	modelMR = model;
 	drawSegment(temp);
 	model = glm::translate(model, glm::vec3(0.74f, -0.05f, 0.0f));
-	//model = glm::rotate(model, glm::radians(-3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(-8.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	modelMR = model;
 	drawSegment(temp);
 	model = glm::translate(model, glm::vec3(0.74f, -0.05f, 0.0f));
-	//model = glm::rotate(model, glm::radians(-3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(-8.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	modelMR = model;
 	drawSegment(temp);
 	model = glm::translate(model, glm::vec3(0.74f, -0.05f, 0.0f));
-	//model = glm::rotate(model, glm::radians(-3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(-8.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	modelMR = model;
 	drawSegment(temp);
 	model = glm::translate(model, glm::vec3(0.74f, -0.05f, 0.0f));
-	//model = glm::rotate(model, glm::radians(-3.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(-8.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	modelMR = model;
 	drawSegment(temp);
@@ -3225,8 +3205,6 @@ void displayRoallingCoaster(Shader shader) {
 	model = glm::rotate(model, glm::radians(10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	modelMR = model;
 	drawSegment(temp);
-
-
 }
 
 //Variables que delimitan la velocidad de animacion del carrusel
@@ -3826,12 +3804,11 @@ int main()
 		display(modelShader, modelTierra, modelPista);
 		displayRoallingCoaster(projectionShader);
 		drawVagon(projectionShader);
-		diplayElemCielo();
-		displayCarrousell(projectionShader, modelShader, modelCaballo);
-		displayObjects(modelShader, modelTierra, modelPista, /*modelArbol, modelBanca, modelBasura, modelBarda,*/ modelCaballo, /*modelLuz2,*/ modelLuz4/*, modelLuz1, modelEntrada*/);
+		//diplayElemCielo();
+		//displayCarrousell(projectionShader, modelShader, modelCaballo);
+		//displayObjects(modelShader, modelTierra, modelPista, /*modelArbol, modelBanca, modelBasura, modelBarda,*/ modelCaballo, /*modelLuz2,*/ modelLuz4/*, modelLuz1, modelEntrada*/);
 		displayEnvironment();
-		displayBushes();
-
+		//displayBushes();
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -3855,6 +3832,10 @@ void my_input(GLFWwindow *window)
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 	if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS) {
+		xoffset1 = 1.0;
+		yoffset1 = 1.0;
+	}
+	if (glfwGetKey(window, GLFW_KEY_F2) == GLFW_PRESS) {
 		xoffset1 = 4.0;
 		yoffset1 = 4.0;
 	}
@@ -3900,33 +3881,33 @@ void my_input(GLFWwindow *window)
 	{
 		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) {
 			//if (movCodo < 0)
-			rotX -= 0.01f;
+			rotX -= 0.1f;
 		}
 		else {
 			//if (movCodo > -140)
-			rotX += 0.01f;
+			rotX += 0.1f;
 		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_Z))
 	{
 		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) {
 			//if (movCodo < 0)
-			rotY -= 0.01f;
+			rotY -= 0.1f;
 		}
 		else {
 			//if (movCodo > -140)
-			rotY += 0.01f;
+			rotY += 0.1f;
 		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_C))
 	{
 		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) {
 			//if (movCodo < 0)
-			rotZ -= 0.01f;
+			rotZ -= 0.1f;
 		}
 		else {
 			//if (movCodo > -140)
-			rotZ += 0.01f;
+			rotZ += 0.1f;
 		}
 	}
 
@@ -3947,6 +3928,7 @@ void my_input(GLFWwindow *window)
 		{
 			play = false;
 		}
+		glfwWaitEventsTimeout(1.7);
 	}
 
 	//To Save a KeyFrame
@@ -3966,14 +3948,14 @@ void my_input(GLFWwindow *window)
 		glfwWaitEventsTimeout(1.7);
 	}
 		
-	//Para todo leer el fichero
+	//Para leer el fichero
 	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
 		readFile("animation.txt");
 		//cargaFrames();
 		glfwWaitEventsTimeout(1.7);
 	}
 
-	//Para todo leer el fichero
+	//Para cargar las pposiciones guardadas en el arreglo de estructuras
 	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) {
 		cargaFrames();
 		glfwWaitEventsTimeout(1.7);
@@ -3983,6 +3965,7 @@ void my_input(GLFWwindow *window)
 	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
 		modelSwitch = !modelSwitch;
 		horseOn = !horseOn;
+		glfwWaitEventsTimeout(1.7);
 	}
 
 }
