@@ -55,6 +55,7 @@ glm::mat4 modelEarth = glm::mat4(1.0f);
 glm::mat4 modelVagon = glm::mat4(1.0f);
 glm::mat4 modelHorse = glm::mat4(1.0f);
 glm::mat4 modelDomo = glm::mat4(1.0f);
+glm::mat4 modelLuces = glm::mat4(1.0f);
 
 //Camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -135,7 +136,7 @@ rotZ = 0.0f;
 long contador= 0L;
 
 #define MAX_FRAMES 250
-int i_max_steps = 10; //i_max_steps = 190
+int i_max_steps = 60; //i_max_steps = 190
 int i_curr_steps = 0;
 typedef struct _frame
 {
@@ -499,7 +500,19 @@ void animate(void)
 {
 
 	//rotacion += 0.05f;
-	giroSol += 0.01f;
+	giroSol += 0.5f;
+	//atardecer
+	if (giroSol >= 80.0f && giroSol < 110.0f) {
+		colorR -= 0.004f;
+		colorGB -= 0.012f;
+	}
+	if (giroSol >= 260.0f && giroSol < 290.0f) {
+		colorR += 0.004f;
+		colorGB += 0.012f;
+	}
+	if (giroSol >= 360.0f ) {
+		giroSol = 0.0f;
+	}
 
 	movKit_z += 0.01f * direccion;
 	if (movKit_z >= tamanioPista) {
@@ -547,10 +560,185 @@ void animate(void)
 
 }
 
-void diplayElemCielo() {
+void displayLights(){
 
 	Shader lampShader("shaders/shader_lamp.vs", "shaders/shader_lamp.fs");
 
+	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
+	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
+	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
+
+	//Use "projection" to include Camera
+	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	view = camera.GetViewMatrix();
+
+	lampShader.use();
+	lampShader.setMat4("projection", projection);
+	lampShader.setMat4("view", view);
+
+	float distancia = 3.6f;
+	float diametro = 0.1f;
+
+	model = modelLuces;
+
+	model = glm::translate(model, glm::vec3(0.0f, distancia, 0.0f));
+	model = glm::scale(model, glm::vec3(diametro));
+	lampShader.setMat4("model", model);
+	lampShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
+	my_esfera.render();
+
+	model = modelLuces;
+
+	model = glm::translate(model, glm::vec3(0.0f, -distancia, 0.0f));
+	model = glm::scale(model, glm::vec3(diametro));
+	lampShader.setMat4("model", model);
+	lampShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
+	my_esfera.render();
+
+	model = modelLuces;
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, distancia));
+	model = glm::scale(model, glm::vec3(diametro));
+	lampShader.setMat4("model", model);
+	lampShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	my_esfera.render();
+
+	model = modelLuces;
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -distancia));
+	model = glm::scale(model, glm::vec3(diametro));
+	lampShader.setMat4("model", model);
+	lampShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	my_esfera.render();
+
+	model = modelLuces;
+
+	model = glm::translate(model, glm::vec3(0.0f, distancia*.7071f, distancia*.7071f));
+	model = glm::scale(model, glm::vec3(diametro));
+	lampShader.setMat4("model", model);
+	lampShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
+	my_esfera.render();
+
+	model = modelLuces;
+
+	model = glm::translate(model, glm::vec3(0.0f, -distancia *.7071f, -distancia *.7071f));
+	model = glm::scale(model, glm::vec3(diametro));
+	lampShader.setMat4("model", model);
+	lampShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+	my_esfera.render();
+
+	model = modelLuces;
+
+	model = glm::translate(model, glm::vec3(0.0f, distancia*.7071f, -distancia *.7071f));
+	model = glm::scale(model, glm::vec3(diametro));
+	lampShader.setMat4("model", model);
+	lampShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 1.0f));
+	my_esfera.render();
+
+	model = modelLuces;
+
+	model = glm::translate(model, glm::vec3(0.0f, -distancia *.7071f, distancia*.7071f));
+	model = glm::scale(model, glm::vec3(diametro));
+	lampShader.setMat4("model", model);
+	lampShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
+	my_esfera.render();
+}
+
+void displayLightsOff() {
+
+	Shader projectionShader("shaders/shader_light.vs", "shaders/shader_light.fs");
+
+	projectionShader.use();
+	projectionShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+	projectionShader.setVec3("lightPos", lightPos);
+
+	// create transformations and Projection
+	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
+	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
+	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
+
+	//Use "projection" to include Camera
+	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	view = camera.GetViewMatrix();
+
+	// pass them to the shaders
+	projectionShader.setVec3("viewPos", camera.Position);
+	projectionShader.setMat4("model", model);
+	projectionShader.setMat4("view", view);
+	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+	projectionShader.setMat4("projection", projection);
+
+	float distancia = 3.6f;
+	float diametro = 0.1f;
+
+	model = modelLuces;
+
+	model = glm::translate(model, glm::vec3(0.0f, distancia, 0.0f));
+	model = glm::scale(model, glm::vec3(diametro));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	my_esfera.render();
+
+	model = modelLuces;
+
+	model = glm::translate(model, glm::vec3(0.0f, -distancia, 0.0f));
+	model = glm::scale(model, glm::vec3(diametro));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	my_esfera.render();
+
+	model = modelLuces;
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, distancia));
+	model = glm::scale(model, glm::vec3(diametro));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	my_esfera.render();
+
+	model = modelLuces;
+
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -distancia));
+	model = glm::scale(model, glm::vec3(diametro));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	my_esfera.render();
+
+	model = modelLuces;
+
+	model = glm::translate(model, glm::vec3(0.0f, distancia*.7071f, distancia*.7071f));
+	model = glm::scale(model, glm::vec3(diametro));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	my_esfera.render();
+
+	model = modelLuces;
+
+	model = glm::translate(model, glm::vec3(0.0f, -distancia * .7071f, -distancia * .7071f));
+	model = glm::scale(model, glm::vec3(diametro));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	my_esfera.render();
+
+	model = modelLuces;
+
+	model = glm::translate(model, glm::vec3(0.0f, distancia*.7071f, -distancia * .7071f));
+	model = glm::scale(model, glm::vec3(diametro));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	my_esfera.render();
+
+	model = modelLuces;
+
+	model = glm::translate(model, glm::vec3(0.0f, -distancia * .7071f, distancia*.7071f));
+	model = glm::scale(model, glm::vec3(diametro));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+	my_esfera.render();
+}
+
+void diplayElemCielo() {
+
+	Shader lampShader("shaders/shader_lamp.vs", "shaders/shader_lamp.fs");
 
 	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
 	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
@@ -728,15 +916,6 @@ void display(Shader shader, Model modelo1, Model ground)
 	shader.setMat4("model", model);
 	ground.Draw(shader);
 
-	model = glm::mat4(1.0f);
-
-	//
-	tmp = model = glm::translate(model, glm::vec3(movKit_z-4.0f, 0.0f, 2.0f));
-	model = glm::rotate(model, glm::radians(rotacion), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f)); //earth
-	shader.setMat4("model", model);
-
-	//modelo1.Draw(shader);
 }
 
 //Primitiva de un riel para la montaña rusa
@@ -3430,6 +3609,7 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 	model = glm::rotate(model, glm::radians(animTubos), glm::vec3(0.0f, 1.0f, 0.0f)); //Animacion de giro
 	model = glm::translate(model, glm::vec3(0.0f, 1.2f, 0.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	modelLuces = model;
 	model = glm::scale(model, glm::vec3(sx_cil / 4, sy_cil * 3.49, sz_cil * 3.49));
 	shader.setMat4("model", model);
 	shader.setVec3("ambientColor", 1.0f, 0.57f, 0.40f);
@@ -3653,6 +3833,13 @@ void displayCarrousell(Shader shader, Shader Modelshader, Model modelo1) {
 		drawModel(Modelshader, modelo1, 5);
 	}
 	drawDomoCarrusel(shader);
+
+	//luces carrusel
+	if (giroSol >= 90.0f && giroSol < 270.0f)
+		displayLights();
+	if (giroSol < 90.0f || giroSol >= 270.0f)
+		displayLightsOff();
+
 }
 
 //Dentro de ésta funcion mandamos a llamar a drawModelos con el modelo que queramos y un id creciente; dentro de esa función modificamos los parámetros de dibujo.
@@ -3804,11 +3991,11 @@ int main()
 		display(modelShader, modelTierra, modelPista);
 		displayRoallingCoaster(projectionShader);
 		drawVagon(projectionShader);
-		//diplayElemCielo();
-		//displayCarrousell(projectionShader, modelShader, modelCaballo);
-		//displayObjects(modelShader, modelTierra, modelPista, /*modelArbol, modelBanca, modelBasura, modelBarda,*/ modelCaballo, /*modelLuz2,*/ modelLuz4/*, modelLuz1, modelEntrada*/);
+		diplayElemCielo();
+		displayCarrousell(projectionShader, modelShader, modelCaballo);
+		displayObjects(modelShader, modelTierra, modelPista, /*modelArbol, modelBanca, modelBasura, modelBarda,*/ modelCaballo, /*modelLuz2,*/ modelLuz4/*, modelLuz1, modelEntrada*/);
 		displayEnvironment();
-		//displayBushes();
+		displayBushes();
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
