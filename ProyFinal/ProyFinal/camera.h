@@ -87,7 +87,7 @@ public:
 	}
 	//reposicionar la camara
 	void reposition() {
-		Position.y = -4.0f;
+		Position.y = -5.0f;
 	}
 	//Camara libre
 	void ProcessKeyboardFree(Camera_Movement direction, float deltaTime)

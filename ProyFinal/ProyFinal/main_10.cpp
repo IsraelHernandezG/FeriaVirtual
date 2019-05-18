@@ -65,6 +65,8 @@ bool firstMouse = true;
 bool cameraMode = false;
 double xoffset1 = 0.01;
 double yoffset1 = 0.01;
+float mov_horizontal = 0.0f,
+mov_vertical = 0.0f;
 
 //Timing
 double	deltaTime = 0.0f,
@@ -86,15 +88,24 @@ string leerArchivo(string,long);
 void creaArchivo(string);
 unsigned int generateTextures(char*, bool, string);
 void resetElements();
+void objetivosDisparo();
+
+//for mobile models
+float x1 = 0.0f,
+x2 = 0.0f,
+x3 = 0.0f,
+x4 = 0.0f,
+x5 = 0.0f;
+
 
 //For Keyboard
 float	movX = 0.0f,
 movY = 0.0f,
 movZ = -5.0f;
-
 bool play = false,
 	modelSwitch = false,
-	horseOn = false;
+	horseOn = false,
+	game = false;
 
 //For model
 float movKit_z = 0.0f,
@@ -107,6 +118,7 @@ float movKit_z = 0.0f,
 float giroSol = 0.0f,
 colorR = 0.251f,
 colorGB = 0.898f;
+float bullet = 0.0f;
 
 //textures
 unsigned int	t_smile,
@@ -500,6 +512,32 @@ void myData()
 
 void animate(void)
 {
+	if (x1 <= 4.0f) {
+		x1 += 0.001f;
+	}
+	if (x1 > 4.0f) {
+		x1 = 0.0f;
+	}
+	
+	if (x2 <= 3.0f) {
+		x2 += 0.001f;
+	}
+	if (x2 > 3.0f) {
+		x2 = -1.0f;
+	}
+
+	if (x3 <= 2.0f) {
+		x3 += 0.001f;
+	}
+	if (x3 > 2.0f) {
+		x3 = -2.0f;
+	}
+	if (x4 <= 1.0f) {
+		x4 += 0.001f;
+	}
+	if (x4 > 1.0f) {
+		x4 = -3.0f;
+	}
 
 	//rotacion += 0.05f;
 	//giroSol += 0.5f;
@@ -775,16 +813,295 @@ void diplayElemCielo() {
 
 }
 
+void displayPuestoTiro() {
+	Shader lightingShader("shaders/shader_texture_light_dir.vs", "shaders/shader_texture_light_dir.fs"); //Directional
+
+	lightingShader.use();
+	lightingShader.setVec3("light.direction", lightDirection);
+	lightingShader.setVec3("viewPos", camera.Position);
+
+	// light properties
+	lightingShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+	lightingShader.setVec3("light.diffuse", 0.8f, 0.8f, 0.8f);
+	lightingShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+	//For Positional and Spotlight
+	lightingShader.setFloat("light.constant", 1.0f);
+	lightingShader.setFloat("light.linear", 0.09f);
+	lightingShader.setFloat("light.quadratic", 0.032f);
+
+	// material properties
+	lightingShader.setFloat("material_shininess", 32.0f);
+
+	// create transformations and Projection
+	glm::mat4 temp = glm::mat4(1.0f);
+	glm::mat4 temp2 = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
+	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
+	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
+
+	//Use "projection" to include Camera
+	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	view = camera.GetViewMatrix();
+
+	// pass them to the shaders
+	//lightingShader.setVec3("viewPos", camera.Position);
+	lightingShader.setMat4("model", model);
+	lightingShader.setMat4("view", view);
+	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+	lightingShader.setMat4("projection", projection);
+
+
+	glBindVertexArray(VAO);
+	//Colocar código aquí
+	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 0.0f);
+	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", t_caja);
+
+	//cara cubo
+	//model = modelVagon;
+	//model = glm::translate(model, glm::vec3(posX, posY, posZ));
+
+	model = glm::translate(model, glm::vec3(10.0f, -4.35f, -15.0f));
+	temp = model = glm::scale(model, glm::vec3(5.0f, 3.5f, 4.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);
+	//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f)); //traslacion
+	//lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 8, 4);
+	glDrawArrays(GL_QUADS, 12, 4);
+	glDrawArrays(GL_QUADS, 20, 4);
+
+	model = temp;
+	model = glm::translate(model, glm::vec3(0.4f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.2f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 4, 4);
+
+	model = temp;
+	model = glm::translate(model, glm::vec3(-0.4f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.2f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 4, 4);
+
+	model = temp;
+	model = glm::translate(model, glm::vec3(0.0f, 0.4f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.6f, 0.2f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 4, 4);
+
+	//segunda pared
+	model = temp;
+	model = glm::translate(model, glm::vec3(0.0f, -0.35f, 0.05f));
+	model = glm::scale(model, glm::vec3(1.0f, 0.3f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);
+
+	model = temp;
+	model = glm::translate(model, glm::vec3(0.0f, 0.4f, 0.05f));
+	model = glm::scale(model, glm::vec3(1.0f, 0.2f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);
+
+	model = temp;
+	model = glm::translate(model, glm::vec3(-0.4f, 0.05f, 0.05f));
+	model = glm::scale(model, glm::vec3(0.2f, 0.5f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);
+
+	model = temp;
+	model = glm::translate(model, glm::vec3(0.4f, 0.05f, 0.05f));
+	model = glm::scale(model, glm::vec3(0.2f, 0.51f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);
+
+	//mesa
+	lightingShader.setInt("material_diffuse", t_white);
+
+	model = temp;
+	model = glm::translate(model, glm::vec3(0.0f, -0.4f, 0.35f));
+	temp = model = glm::scale(model, glm::vec3(0.8f, 0.2f, 0.2f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	//dibujar rifles
+
+	objetivosDisparo();
+
+}
+
+void objetivosDisparo() {
+	Shader projectionShader("shaders/shader_light.vs", "shaders/shader_light.fs"); //PARA PRIMITIVAS
+
+	projectionShader.use();
+	projectionShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+	projectionShader.setVec3("lightPos", lightPos);
+
+	// create transformations and Projection
+	glm::mat4 tmp = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
+	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
+	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
+
+	//Use "projection" to include Camera
+	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	view = camera.GetViewMatrix();
+
+	// pass them to the shaders
+	projectionShader.setVec3("viewPos", camera.Position);
+	projectionShader.setMat4("model", model);
+	projectionShader.setMat4("view", view);
+	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+	projectionShader.setMat4("projection", projection);
+
+	glBindVertexArray(VAO);
+
+	tmp = model = glm::translate(model, glm::vec3(10.0f, -5.0f, -16.85f));
+	model = glm::translate(model, glm::vec3(x3, 0.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::scale(model, glm::vec3(0.12f, 0.03f, 0.03));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	projectionShader.setVec3("diffuseColor", 0.1f, 0.1f, 0.1f);
+	projectionShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	my_cilindro.render();
+
+	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f));
+	projectionShader.setMat4("model", model);
+	my_esfera.render();
+
+	model = tmp;
+	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(x4, 0.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::scale(model, glm::vec3(0.12f, 0.03f, 0.03));
+	projectionShader.setMat4("model", model);
+	my_cilindro.render();
+
+	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f));
+	projectionShader.setMat4("model", model);
+	my_esfera.render();
+
+	model = tmp;
+	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(x2, 0.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::scale(model, glm::vec3(0.12f, 0.03f, 0.03));
+	projectionShader.setMat4("model", model);
+	my_cilindro.render();
+
+	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f));
+	projectionShader.setMat4("model", model);
+	my_esfera.render();
+
+	model = tmp;
+	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(x1, 0.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::scale(model, glm::vec3(0.12f, 0.03f, 0.03));
+	projectionShader.setMat4("model", model);
+	my_cilindro.render();
+
+	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f));
+	projectionShader.setMat4("model", model);
+	my_esfera.render();
+}
+
+void displayGun() {
+
+	Shader projectionShader("shaders/shader_light.vs", "shaders/shader_light.fs"); //PARA PRIMITIVAS
+
+	projectionShader.use();
+	projectionShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+	projectionShader.setVec3("lightPos", lightPos);
+
+	// create transformations and Projection
+	glm::mat4 tmp = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
+	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
+	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
+
+	//Use "projection" to include Camera
+	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	view = camera.GetViewMatrix();
+
+	// pass them to the shaders
+	projectionShader.setVec3("viewPos", camera.Position);
+	projectionShader.setMat4("model", model);
+	projectionShader.setMat4("view", view);
+	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+	projectionShader.setMat4("projection", projection);
+
+	glBindVertexArray(VAO);
+
+	model = glm::translate(model, camera.Position);
+	model = glm::translate(model, glm::vec3(0.0f, -0.05f, -0.0f));
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(mov_horizontal), glm::vec3(0.0f, 1.0f, 0.0f));
+	tmp = model = glm::rotate(model, glm::radians(mov_vertical), glm::vec3(0.0f, 0.0f, 1.0f));
+	//model = glm::rotate(model, camera.Up.);
+	model = glm::scale(model, glm::vec3(0.12f, 0.003f, 0.003));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	projectionShader.setVec3("diffuseColor", 0.1f, 0.1f, 0.1f);
+	projectionShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	my_cilindro.render();
+
+
+}
+
+void fireBullet(){
+
+	Shader projectionShader("shaders/shader_light.vs", "shaders/shader_light.fs"); //PARA PRIMITIVAS
+
+	projectionShader.use();
+	projectionShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+	projectionShader.setVec3("lightPos", lightPos);
+
+	// create transformations and Projection
+	glm::mat4 tmp = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
+	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
+	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
+
+	//Use "projection" to include Camera
+	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	view = camera.GetViewMatrix();
+
+	// pass them to the shaders
+	projectionShader.setVec3("viewPos", camera.Position);
+	projectionShader.setMat4("model", model);
+	projectionShader.setMat4("view", view);
+	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+	projectionShader.setMat4("projection", projection);
+
+	glBindVertexArray(VAO);
+
+	model = glm::translate(model, camera.Position);
+	model = glm::translate(model, glm::vec3(0.0f, -0.05f, 0.0f));
+	model = glm::rotate(model, glm::radians(mov_horizontal), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(mov_vertical), glm::vec3(1.0f, 0.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -0.19f));
+	model = glm::scale(model, glm::vec3(0.002f, 0.002f, 0.002f));
+	projectionShader.setMat4("model", model);
+	projectionShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	projectionShader.setVec3("diffuseColor", 0.0f, 0.0f, 0.0f);
+	projectionShader.setVec3("specularColor", 1.0f, 1.0f, 1.0f);
+	my_esfera.render();
+
+}
+
+
 void displayCubes()
 {
 	Shader lightingShader("shaders/shader_texture_light_dir.vs", "shaders/shader_texture_light_dir.fs"); //Directional
 
 	lightingShader.use();
-
-
 	lightingShader.setVec3("light.direction", lightDirection);
-
-
 	lightingShader.setVec3("viewPos", camera.Position);
 
 	// light properties
@@ -3999,6 +4316,12 @@ int main()
 		//displayObjects(modelShader, modelTierra, modelPista, /*modelArbol, modelBanca, modelBasura, modelBarda,*/ modelCaballo, /*modelLuz2,*/ modelLuz4/*, modelLuz1, modelEntrada*/);
 		displayEnvironment();
 		//displayBushes();
+		displayPuestoTiro();
+		if (game==true) {
+			displayGun();
+			fireBullet();
+		}
+		
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -4021,13 +4344,15 @@ void my_input(GLFWwindow *window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
-	if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS) {
-		xoffset1 = 1.0;
-		yoffset1 = 1.0;
+	if (glfwGetKey(window, GLFW_KEY_KP_ADD) == GLFW_PRESS) {
+		xoffset1 += 0.1;
+		yoffset1 += 0.1;
+		glfwWaitEventsTimeout(1.7);
 	}
-	if (glfwGetKey(window, GLFW_KEY_F2) == GLFW_PRESS) {
-		xoffset1 = 4.0;
-		yoffset1 = 4.0;
+	if (glfwGetKey(window, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS) {
+		xoffset1 -= 0.1;
+		yoffset1 -= 0.1;
+		glfwWaitEventsTimeout(1.7);
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_KP_ENTER) == GLFW_PRESS) {
@@ -4076,17 +4401,21 @@ void my_input(GLFWwindow *window)
 
 	if (glfwGetKey(window, GLFW_KEY_KP_4) == GLFW_PRESS) {
 		camera.ProcessMouseMovement(-xoffset1 / (float)deltaTime, 0);
+		mov_horizontal += 0.1f*xoffset1 / (float)deltaTime;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_KP_6) == GLFW_PRESS) {
 		camera.ProcessMouseMovement(xoffset1 / (float)deltaTime, 0);
+		mov_horizontal -= 0.1f*xoffset1 / (float)deltaTime;
 	}
 	if (glfwGetKey(window, GLFW_KEY_KP_8) == GLFW_PRESS) {
 		camera.ProcessMouseMovement(0, yoffset1 / (float)deltaTime);
+		mov_vertical += 0.1f*yoffset1 / (float)deltaTime;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_KP_2) == GLFW_PRESS) {
 		camera.ProcessMouseMovement(0, -yoffset1 / (float)deltaTime);
+		mov_vertical -= 0.1f*yoffset1 / (float)deltaTime;
 	}
 
 	//Movimiento del modelo Vagon
@@ -4140,6 +4469,13 @@ void my_input(GLFWwindow *window)
 		glfwWaitEventsTimeout(1.7);
 	}
 
+	//bullet
+	if (glfwGetKey(window, GLFW_KEY_UP)) {
+		bullet -= 0.001f;
+	}
+	if (glfwGetKey(window, GLFW_KEY_DOWN)) {
+		bullet += 0.001f;
+	}
 
 	//To play KeyFrame animation 
 	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
@@ -4198,6 +4534,11 @@ void my_input(GLFWwindow *window)
 		glfwWaitEventsTimeout(1.7);
 	}
 
+	if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS) {
+		game = !game;
+		glfwWaitEventsTimeout(1.7);
+	}
+
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -4225,7 +4566,13 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	lastX = xpos;
 	lastY = ypos;
 
-	camera.ProcessMouseMovement(xoffset, yoffset);
+
+	//if (game == false) {
+		camera.ProcessMouseMovement(xoffset, yoffset);
+		mov_horizontal -= 0.001f*xoffset / (float)deltaTime;
+		//mov_vertical += 0.001f*yoffset / (float)deltaTime;
+	//}
+	
 }
 
 // glfw: whenever the mouse scroll wheel scrolls, this callback is called
