@@ -62,6 +62,7 @@ Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 double	lastX = 0.0f,
 		lastY = 0.0f;
 bool firstMouse = true;
+bool cameraMode = false;
 double xoffset1 = 0.01;
 double yoffset1 = 0.01;
 
@@ -132,6 +133,7 @@ posZ = 0.0f,
 rotX = 0.0f,
 rotY = 0.0f,
 rotZ = 0.0f;
+bool bandera1 = false;
 
 long contador= 0L;
 
@@ -500,7 +502,7 @@ void animate(void)
 {
 
 	//rotacion += 0.05f;
-	giroSol += 0.5f;
+	//giroSol += 0.5f;
 	//atardecer
 	if (giroSol >= 80.0f && giroSol < 110.0f) {
 		colorR -= 0.004f;
@@ -890,7 +892,7 @@ void displayCubes()
 
 }
 
-void display(Shader shader, Model modelo1, Model ground)
+void display(Shader shader, Model ground)
 {
 	shader.use();
 
@@ -3958,17 +3960,18 @@ int main()
 	//Model modelBanca	= ((char *)"Models/banca/banca.obj");
 	//Model modelBasura	= ((char *)"Models/basura/basura.obj");
 	//Model modelBarda	= ((char *)"Models/barda/barda.obj");
-	Model modelCaballo = ((char *)"Models/caballo/caballo.obj");
+	//Model modelCaballo = ((char *)"Models/caballo/caballo.obj");
 	//Model modelLuz2		= ((char *)"Models/luz_dual/luz_dual.obj");
-	Model modelLuz4		= ((char *)"Models/luz_quad/luz_quad.obj");
+	//Model modelLuz4		= ((char *)"Models/luz_quad/luz_quad.obj");
 	//Model modelLuz1		= ((char *)"Models/luz_simple/luz_simple.obj");
 	//Model modelEntrada	= ((char *)"Models/arco/arco.obj");
 	//Model Model = ((char *)"Models/.obj");
 
-    
 	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
 	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-	// render loop
+	
+	camera.reposition();
+	//render loop
     // While the windows is not closed
     while (!glfwWindowShouldClose(window))
     {
@@ -3988,14 +3991,14 @@ int main()
 		glClearColor(colorR, colorGB, colorGB, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		display(modelShader, modelTierra, modelPista);
-		displayRoallingCoaster(projectionShader);
-		drawVagon(projectionShader);
+		display(modelShader, modelPista);
+		//displayRoallingCoaster(projectionShader);
+		//drawVagon(projectionShader);
 		diplayElemCielo();
-		displayCarrousell(projectionShader, modelShader, modelCaballo);
-		displayObjects(modelShader, modelTierra, modelPista, /*modelArbol, modelBanca, modelBasura, modelBarda,*/ modelCaballo, /*modelLuz2,*/ modelLuz4/*, modelLuz1, modelEntrada*/);
+		//displayCarrousell(projectionShader, modelShader, modelCaballo);
+		//displayObjects(modelShader, modelTierra, modelPista, /*modelArbol, modelBanca, modelBasura, modelBarda,*/ modelCaballo, /*modelLuz2,*/ modelLuz4/*, modelLuz1, modelEntrada*/);
 		displayEnvironment();
-		displayBushes();
+		//displayBushes();
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -4016,7 +4019,7 @@ int main()
 // ---------------------------------------------------------------------------------------------------------
 void my_input(GLFWwindow *window)
 {
-		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 	if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS) {
 		xoffset1 = 1.0;
@@ -4026,14 +4029,50 @@ void my_input(GLFWwindow *window)
 		xoffset1 = 4.0;
 		yoffset1 = 4.0;
 	}
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		camera.ProcessKeyboard(FORWARD, (float)deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		camera.ProcessKeyboard(BACKWARD, (float)deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		camera.ProcessKeyboard(LEFT, (float)deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		camera.ProcessKeyboard(RIGHT, (float)deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_KP_ENTER) == GLFW_PRESS) {
+		if (cameraMode == true) {
+			camera.reposition();
+		}
+		cameraMode = !cameraMode;
+		glfwWaitEventsTimeout(1.7);
+	}
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+		if (cameraMode == false) {
+			camera.ProcessKeyboard(FORWARD, (float)deltaTime);
+		}
+		else{
+			camera.ProcessKeyboardFree(FORWARD, (float)deltaTime);
+		}
+	}
+		
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+		if (cameraMode == false) {
+			camera.ProcessKeyboard(BACKWARD, (float)deltaTime);
+		}
+		else {
+			camera.ProcessKeyboardFree(BACKWARD, (float)deltaTime);
+		}
+	}
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+		if (cameraMode == false) {
+			camera.ProcessKeyboard(LEFT, (float)deltaTime);
+		}
+		else {
+			camera.ProcessKeyboardFree(LEFT, (float)deltaTime);
+		}
+	}
+		
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+		if (cameraMode == false) {
+			camera.ProcessKeyboard(RIGHT, (float)deltaTime);
+		}
+		else {
+			camera.ProcessKeyboardFree(RIGHT, (float)deltaTime);
+		}
+	}
+		
+
 
 	if (glfwGetKey(window, GLFW_KEY_KP_4) == GLFW_PRESS) {
 		camera.ProcessMouseMovement(-xoffset1 / (float)deltaTime, 0);
@@ -4050,21 +4089,20 @@ void my_input(GLFWwindow *window)
 		camera.ProcessMouseMovement(0, -yoffset1 / (float)deltaTime);
 	}
 
-	//To Configure Model
-	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
+	//Movimiento del modelo Vagon
+	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS && bandera1 == true)
 		posY += 0.01f;
-	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS && bandera1 == true)
 		posY -= 0.01f;
-	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS && bandera1 == true)
 		posX -= 0.01f;
-	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS && bandera1 == true)
 		posX += 0.01f;
-	if (glfwGetKey(window, GLFW_KEY_PAGE_UP) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_PAGE_UP) == GLFW_PRESS && bandera1 == true)
 		posZ += 0.01f;
-	if (glfwGetKey(window, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS && bandera1 == true)
 		posZ -= 0.01f;
-	//Movimiento del modelo
-	if (glfwGetKey(window, GLFW_KEY_X))
+	if (glfwGetKey(window, GLFW_KEY_X) && bandera1 == true)
 	{
 		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) {
 			//if (movCodo < 0)
@@ -4075,7 +4113,7 @@ void my_input(GLFWwindow *window)
 			rotX += 0.1f;
 		}
 	}
-	if (glfwGetKey(window, GLFW_KEY_Z))
+	if (glfwGetKey(window, GLFW_KEY_Z) && bandera1 == true)
 	{
 		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) {
 			//if (movCodo < 0)
@@ -4086,7 +4124,7 @@ void my_input(GLFWwindow *window)
 			rotY += 0.1f;
 		}
 	}
-	if (glfwGetKey(window, GLFW_KEY_C))
+	if (glfwGetKey(window, GLFW_KEY_C) && bandera1 == true)
 	{
 		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) {
 			//if (movCodo < 0)
@@ -4097,6 +4135,11 @@ void my_input(GLFWwindow *window)
 			rotZ += 0.1f;
 		}
 	}
+	if (glfwGetKey(window, GLFW_KEY_CAPS_LOCK) == GLFW_PRESS) {
+		bandera1 = !bandera1;
+		glfwWaitEventsTimeout(1.7);
+	}
+
 
 	//To play KeyFrame animation 
 	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
@@ -4142,7 +4185,7 @@ void my_input(GLFWwindow *window)
 		glfwWaitEventsTimeout(1.7);
 	}
 
-	//Para cargar las pposiciones guardadas en el arreglo de estructuras
+	//Para cargar las posiciones guardadas en el arreglo de estructuras
 	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) {
 		cargaFrames();
 		glfwWaitEventsTimeout(1.7);

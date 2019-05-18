@@ -29,9 +29,9 @@ class Camera
 public:
 	// Camera Attributes
 	glm::vec3 Position;
-	glm::vec3 Front;
+	glm::vec3 Front = glm::vec3(1.0f, 0.0f, 1.0f);
 	glm::vec3 Up;
-	glm::vec3 Right;
+	glm::vec3 Right = glm::vec3(1.0f, 0.0f, 1.0f);
 	glm::vec3 WorldUp;
 	// Euler Angles
 	float Yaw;
@@ -67,13 +67,38 @@ public:
 	}
 
 	// Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
-	void ProcessKeyboard(Camera_Movement direction, float deltaTime)
+	void ProcessKeyboard(Camera_Movement direction, float deltaTime) //carama primera persona
 	{
 		float velocity = MovementSpeed * deltaTime;
-		if (direction == FORWARD)
+		if (direction == FORWARD) {
+			Position.x += Front.x * velocity;
+			Position.z += Front.z * velocity;
+		}
+			
+		if (direction == BACKWARD) {
+			Position.x -= Front.x * velocity;
+			Position.z -= Front.z * velocity;
+		}
+			
+		if (direction == LEFT)
+			Position -= Right * velocity;
+		if (direction == RIGHT)
+			Position += Right * velocity;
+	}
+	//reposicionar la camara
+	void reposition() {
+		Position.y = -4.0f;
+	}
+	//Camara libre
+	void ProcessKeyboardFree(Camera_Movement direction, float deltaTime)
+	{
+		float velocity = MovementSpeed * deltaTime;
+		if (direction == FORWARD) 
 			Position += Front * velocity;
-		if (direction == BACKWARD)
+		
+		if (direction == BACKWARD) 
 			Position -= Front * velocity;
+
 		if (direction == LEFT)
 			Position -= Right * velocity;
 		if (direction == RIGHT)
