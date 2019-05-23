@@ -58,7 +58,7 @@ glm::mat4 modelDomo = glm::mat4(1.0f);
 glm::mat4 modelLuces = glm::mat4(1.0f);
 
 //Camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera(glm::vec3(0.0f, 0.0f, 0.0f));
 double	lastX = 0.0f,
 		lastY = 0.0f;
 bool firstMouse = true;
@@ -105,7 +105,8 @@ movZ = -5.0f;
 bool play = false,
 	modelSwitch = false,
 	horseOn = false,
-	game = false;
+	game = false,
+	fire = false;
 
 //For model
 float movKit_z = 0.0f,
@@ -513,30 +514,41 @@ void myData()
 void animate(void)
 {
 	if (x1 <= 4.0f) {
-		x1 += 0.001f;
+		x1 += 0.002f;
 	}
 	if (x1 > 4.0f) {
 		x1 = 0.0f;
 	}
 	
 	if (x2 <= 3.0f) {
-		x2 += 0.001f;
+		x2 += 0.002f;
 	}
 	if (x2 > 3.0f) {
 		x2 = -1.0f;
 	}
 
 	if (x3 <= 2.0f) {
-		x3 += 0.001f;
+		x3 += 0.002f;
 	}
 	if (x3 > 2.0f) {
 		x3 = -2.0f;
 	}
 	if (x4 <= 1.0f) {
-		x4 += 0.001f;
+		x4 += 0.002f;
 	}
 	if (x4 > 1.0f) {
 		x4 = -3.0f;
+	}
+
+	//fire bullet
+	if (fire == true) {
+		if (bullet >= -1.0f) {
+			bullet -= 0.01f;
+		}
+		else {
+			bullet = 0.0f;
+			fire = false;
+		}	
 	}
 
 	//rotacion += 0.05f;
@@ -957,7 +969,7 @@ void objetivosDisparo() {
 	glBindVertexArray(VAO);
 
 	tmp = model = glm::translate(model, glm::vec3(10.0f, -5.0f, -16.85f));
-	model = glm::translate(model, glm::vec3(x3, 0.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(x3, sin(animTubos*0.1f)*0.1f, 0.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(0.12f, 0.03f, 0.03));
 	projectionShader.setMat4("model", model);
@@ -973,7 +985,7 @@ void objetivosDisparo() {
 
 	model = tmp;
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	model = glm::translate(model, glm::vec3(x4, 0.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(x4, cos(animTubos*0.1f)*0.1f, 0.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(0.12f, 0.03f, 0.03));
 	projectionShader.setMat4("model", model);
@@ -986,7 +998,7 @@ void objetivosDisparo() {
 
 	model = tmp;
 	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	model = glm::translate(model, glm::vec3(x2, 0.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(x2, cos(animTubos*0.1f)*0.1f, 0.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(0.12f, 0.03f, 0.03));
 	projectionShader.setMat4("model", model);
@@ -999,7 +1011,7 @@ void objetivosDisparo() {
 
 	model = tmp;
 	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
-	model = glm::translate(model, glm::vec3(x1, 0.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(x1, sin(animTubos*0.1f)*0.1f, 0.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(0.12f, 0.03f, 0.03));
 	projectionShader.setMat4("model", model);
@@ -1085,6 +1097,7 @@ void fireBullet(){
 	model = glm::translate(model, glm::vec3(0.0f, -0.05f, 0.0f));
 	model = glm::rotate(model, glm::radians(mov_horizontal), glm::vec3(0.0f, 1.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(mov_vertical), glm::vec3(1.0f, 0.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, bullet));
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -0.19f));
 	model = glm::scale(model, glm::vec3(0.002f, 0.002f, 0.002f));
 	projectionShader.setMat4("model", model);
@@ -4277,7 +4290,7 @@ int main()
 	//Model modelBanca	= ((char *)"Models/banca/banca.obj");
 	//Model modelBasura	= ((char *)"Models/basura/basura.obj");
 	//Model modelBarda	= ((char *)"Models/barda/barda.obj");
-	//Model modelCaballo = ((char *)"Models/caballo/caballo.obj");
+	Model modelCaballo = ((char *)"Models/caballo/caballo.obj");
 	//Model modelLuz2		= ((char *)"Models/luz_dual/luz_dual.obj");
 	//Model modelLuz4		= ((char *)"Models/luz_quad/luz_quad.obj");
 	//Model modelLuz1		= ((char *)"Models/luz_simple/luz_simple.obj");
@@ -4307,19 +4320,21 @@ int main()
         // Backgound color
 		glClearColor(colorR, colorGB, colorGB, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		display(modelShader, modelPista);
-		//displayRoallingCoaster(projectionShader);
-		//drawVagon(projectionShader);
 		diplayElemCielo();
-		//displayCarrousell(projectionShader, modelShader, modelCaballo);
 		//displayObjects(modelShader, modelTierra, modelPista, /*modelArbol, modelBanca, modelBasura, modelBarda,*/ modelCaballo, /*modelLuz2,*/ modelLuz4/*, modelLuz1, modelEntrada*/);
 		displayEnvironment();
-		//displayBushes();
+		
 		displayPuestoTiro();
 		if (game==true) {
 			displayGun();
 			fireBullet();
+		}
+		else {
+			//displayRoallingCoaster(projectionShader);
+			//drawVagon(projectionShader);
+			//displayCarrousell(projectionShader, modelShader, modelCaballo);
+			displayBushes();
 		}
 		
 
@@ -4362,7 +4377,7 @@ void my_input(GLFWwindow *window)
 		cameraMode = !cameraMode;
 		glfwWaitEventsTimeout(1.7);
 	}
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS && game == false) {
 		if (cameraMode == false) {
 			camera.ProcessKeyboard(FORWARD, (float)deltaTime);
 		}
@@ -4371,7 +4386,7 @@ void my_input(GLFWwindow *window)
 		}
 	}
 		
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS && game == false) {
 		if (cameraMode == false) {
 			camera.ProcessKeyboard(BACKWARD, (float)deltaTime);
 		}
@@ -4379,7 +4394,7 @@ void my_input(GLFWwindow *window)
 			camera.ProcessKeyboardFree(BACKWARD, (float)deltaTime);
 		}
 	}
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && game == false) {
 		if (cameraMode == false) {
 			camera.ProcessKeyboard(LEFT, (float)deltaTime);
 		}
@@ -4388,7 +4403,7 @@ void my_input(GLFWwindow *window)
 		}
 	}
 		
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS && game == false) {
 		if (cameraMode == false) {
 			camera.ProcessKeyboard(RIGHT, (float)deltaTime);
 		}
@@ -4399,23 +4414,32 @@ void my_input(GLFWwindow *window)
 		
 
 
-	if (glfwGetKey(window, GLFW_KEY_KP_4) == GLFW_PRESS) {
-		camera.ProcessMouseMovement(-xoffset1 / (float)deltaTime, 0);
-		mov_horizontal += 0.1f*xoffset1 / (float)deltaTime;
+	if (glfwGetKey(window, GLFW_KEY_KP_4) == GLFW_PRESS ) {
+		if (fire == false) {
+			camera.ProcessMouseMovement(-xoffset1 / (float)deltaTime, 0);
+			mov_horizontal += 0.1f*xoffset1 / (float)deltaTime;
+		}
+		
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_KP_6) == GLFW_PRESS) {
-		camera.ProcessMouseMovement(xoffset1 / (float)deltaTime, 0);
-		mov_horizontal -= 0.1f*xoffset1 / (float)deltaTime;
+		if (fire == false) {
+			camera.ProcessMouseMovement(xoffset1 / (float)deltaTime, 0);
+			mov_horizontal -= 0.1f*xoffset1 / (float)deltaTime;
+		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_KP_8) == GLFW_PRESS) {
-		camera.ProcessMouseMovement(0, yoffset1 / (float)deltaTime);
-		mov_vertical += 0.1f*yoffset1 / (float)deltaTime;
+		if (fire == false) {
+			camera.ProcessMouseMovement(0, yoffset1 / (float)deltaTime);
+			mov_vertical += 0.1f*yoffset1 / (float)deltaTime;
+		}
 	}
 
-	if (glfwGetKey(window, GLFW_KEY_KP_2) == GLFW_PRESS) {
-		camera.ProcessMouseMovement(0, -yoffset1 / (float)deltaTime);
-		mov_vertical -= 0.1f*yoffset1 / (float)deltaTime;
+	if (glfwGetKey(window, GLFW_KEY_KP_2) == GLFW_PRESS && fire == false) {
+		if (fire == false) {
+			camera.ProcessMouseMovement(0, -yoffset1 / (float)deltaTime);
+			mov_vertical -= 0.1f*yoffset1 / (float)deltaTime;
+		}
 	}
 
 	//Movimiento del modelo Vagon
@@ -4535,7 +4559,17 @@ void my_input(GLFWwindow *window)
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS) {
+		mov_horizontal = 0.0f;
+		mov_vertical = 0.0f;
+		if (game == false) {
+			camera.repositionGame();
+		}
 		game = !game;
+		glfwWaitEventsTimeout(1.7);
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS && game == true) {
+		fire = true;
 		glfwWaitEventsTimeout(1.7);
 	}
 
@@ -4567,11 +4601,9 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	lastY = ypos;
 
 
-	//if (game == false) {
+	if (game == false) {
 		camera.ProcessMouseMovement(xoffset, yoffset);
-		mov_horizontal -= 0.001f*xoffset / (float)deltaTime;
-		//mov_vertical += 0.001f*yoffset / (float)deltaTime;
-	//}
+	}
 	
 }
 

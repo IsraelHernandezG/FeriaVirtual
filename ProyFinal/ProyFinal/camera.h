@@ -89,6 +89,13 @@ public:
 	void reposition() {
 		Position.y = -5.0f;
 	}
+
+	void  repositionGame() {
+		Position.y = -5.0f;
+		Yaw = YAW;
+		Pitch = PITCH;
+		updateCameraVectors();
+	}
 	//Camara libre
 	void ProcessKeyboardFree(Camera_Movement direction, float deltaTime)
 	{
