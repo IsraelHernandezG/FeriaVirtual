@@ -142,7 +142,9 @@ unsigned int	t_tent1,
 				t_panel2,
 				t_panel3,
 				t_panel4,
-				t_panel5;
+				t_panel5,
+				t_comida,
+				t_arbol;
 
 //For carrusel
 float	animTubos = 0.0f,
@@ -360,6 +362,8 @@ void LoadTextures()
 	t_panel4 = generateTextures("Texturas/letrero4.png", 1, "letrero4");
 	t_panel5 = generateTextures("Texturas/letrero5.png", 1, "letrero5");
 	t_bush2 = generateTextures("Texturas/bush2.jpg", 0, "bush2");
+	t_arbol = generateTextures("Texturas/arbol.png", 1, "arbol");
+	t_comida = generateTextures("Texturas/comida.jpg", 0, "comida");
 	// bind textures on corresponding texture units
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -395,6 +399,10 @@ void LoadTextures()
 	glBindTexture(GL_TEXTURE_2D, t_panel5);
 	glActiveTexture(GL_TEXTURE16);
 	glBindTexture(GL_TEXTURE_2D, t_bush2);
+	glActiveTexture(GL_TEXTURE17);
+	glBindTexture(GL_TEXTURE_2D, t_arbol);
+	glActiveTexture(GL_TEXTURE18);
+	glBindTexture(GL_TEXTURE_2D, t_comida);
 }
 
 void myData()
@@ -1619,7 +1627,7 @@ void displayEnvironment() {
 
 }
 
-//Funcion para dibujar los arbustos
+//Funcion para dibujar los arbustos y arboles
 void displayBushes(){
 	Shader lightingShader("shaders/shader_texture_light_dir.vs", "shaders/shader_texture_light_dir.fs"); //Directional
 	lightingShader.use();
@@ -2331,6 +2339,378 @@ void displayBushes(){
 	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
 	lightingShader.setMat4("model", model);
 	glDrawArrays(GL_QUADS, 0, 24);
+}
+
+//Funcion para dibujar puestos que ambientan la feria.
+void displayStores() {
+	Shader lightingShader("shaders/shader_texture_light_dir.vs", "shaders/shader_texture_light_dir.fs"); //Directional
+	lightingShader.use();
+	lightingShader.setVec3("light.direction", lightDirection);
+	lightingShader.setVec3("viewPos", camera.Position);
+
+	// light properties
+	lightingShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+	lightingShader.setVec3("light.diffuse", 0.8f, 0.8f, 0.8f);
+	lightingShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+	//For Positional and Spotlight
+	lightingShader.setFloat("light.constant", 1.0f);
+	lightingShader.setFloat("light.linear", 0.09f);
+	lightingShader.setFloat("light.quadratic", 0.032f);
+
+	// material properties
+	lightingShader.setFloat("material_shininess", 32.0f);
+
+	// create transformations and Projection
+	glm::mat4 temp = glm::mat4(1.0f);
+	glm::mat4 temp2 = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
+	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
+	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
+
+	//Use "projection" to include Camera
+	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	view = camera.GetViewMatrix();
+
+	// pass them to the shaders
+	//lightingShader.setVec3("viewPos", camera.Position);
+	lightingShader.setMat4("model", model);
+	lightingShader.setMat4("view", view);
+	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+	lightingShader.setMat4("projection", projection);
+
+	glBindVertexArray(VAO);
+	//Colocar código aquí
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 0.0f, 1.0f, 0.0f);
+	lightingShader.setVec3("specularColor", 0.0f, 1.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", t_domo);
+	
+	model = glm::translate(model, glm::vec3(-20.0f, -4.35f, -40.0f));
+	//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	temp = model = glm::scale(model, glm::vec3(4.0f, 3.5f, 4.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4); //trasera
+	glDrawArrays(GL_QUADS, 20, 4); //superior, ambas son carpa
+	
+	//banner
+	model = temp;
+	model = glm::translate(model, glm::vec3(0.0f, 0.4f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0f, 0.2f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 4, 4);
+	
+	//izquierdo y derecho
+	model = temp;
+
+	lightingShader.setInt("material_diffuse", t_madera1);
+	model = glm::translate(model, glm::vec3(0.0f, -0.3f, -0.1f));
+	temp = model = glm::scale(model, glm::vec3(1.0f, 0.5f, 0.8f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 8, 4); //izquierdo
+	glDrawArrays(GL_QUADS, 12, 4); //derecho
+	
+	//Pilares de apoyo
+	model = temp;
+	model = glm::translate(model, glm::vec3(0.4f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.2f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 4, 4);
+
+	model = temp;
+	model = glm::translate(model, glm::vec3(-0.4f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.2f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 4, 4);
+	
+	//Pared de adorno de atras, dentro de la tienda
+	model = temp;
+	model = glm::translate(model, glm::vec3(0.0f, -0.35f, 0.05f));
+	model = glm::scale(model, glm::vec3(1.0f, 0.4f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);
+
+	//Producto de la tienda
+	lightingShader.setInt("material_diffuse", t_panel1);
+	model = temp;
+	model = glm::translate(model, glm::vec3(0.2f, 0.5f, 0.05f));
+	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);
+
+	//
+	//
+	//
+	//
+	//
+	//Segunda tienda
+	model = glm::mat4(1.0f);
+	lightingShader.setInt("material_diffuse", t_domo);
+	model = glm::translate(model, glm::vec3(-12.0f, -4.35f, -40.0f));
+	//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	temp = model = glm::scale(model, glm::vec3(4.0f, 3.5f, 4.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4); //trasera
+	glDrawArrays(GL_QUADS, 20, 4); //superior, ambas son carpa
+
+	//banner
+	model = temp;
+	model = glm::translate(model, glm::vec3(0.0f, 0.4f, 0.0f));
+	model = glm::scale(model, glm::vec3(1.0f, 0.2f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 4, 4);
+
+	//izquierdo y derecho
+	model = temp;
+
+	lightingShader.setInt("material_diffuse", t_madera1);
+	model = glm::translate(model, glm::vec3(0.0f, -0.3f, -0.1f));
+	temp = model = glm::scale(model, glm::vec3(1.0f, 0.5f, 0.8f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 8, 4); //izquierdo
+	glDrawArrays(GL_QUADS, 12, 4); //derecho
+
+	//Pilares de apoyo
+	model = temp;
+	model = glm::translate(model, glm::vec3(0.4f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.2f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 4, 4);
+
+	model = temp;
+	model = glm::translate(model, glm::vec3(-0.4f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.2f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 4, 4);
+
+	//Pared de adorno de atras, dentro de la tienda
+	model = temp;
+	model = glm::translate(model, glm::vec3(0.0f, -0.35f, 0.05f));
+	model = glm::scale(model, glm::vec3(1.0f, 0.4f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);
+
+	//Producto de la tienda
+	lightingShader.setInt("material_diffuse", t_panel1);
+	model = temp;
+	model = glm::translate(model, glm::vec3(0.2f, 0.5f, 0.05f));
+	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);
+}
+
+void displayTrees() {
+	Shader lightingShader("shaders/shader_texture_light_dir.vs", "shaders/shader_texture_light_dir.fs"); //Directional
+	lightingShader.use();
+	lightingShader.setVec3("light.direction", lightDirection);
+	lightingShader.setVec3("viewPos", camera.Position);
+
+	// light properties
+	lightingShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+	lightingShader.setVec3("light.diffuse", 0.8f, 0.8f, 0.8f);
+	lightingShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+	//For Positional and Spotlight
+	lightingShader.setFloat("light.constant", 1.0f);
+	lightingShader.setFloat("light.linear", 0.09f);
+	lightingShader.setFloat("light.quadratic", 0.032f);
+
+	// material properties
+	lightingShader.setFloat("material_shininess", 32.0f);
+
+	// create transformations and Projection
+	glm::mat4 temp = glm::mat4(1.0f);
+	glm::mat4 temp2 = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
+	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
+	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
+
+	//Use "projection" to include Camera
+	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	view = camera.GetViewMatrix();
+
+	// pass them to the shaders
+	//lightingShader.setVec3("viewPos", camera.Position);
+	lightingShader.setMat4("model", model);
+	lightingShader.setMat4("view", view);
+	// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+	lightingShader.setMat4("projection", projection);
+
+	glBindVertexArray(VAO);
+	//Colocar código aquí
+	lightingShader.setVec3("ambientColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setVec3("diffuseColor", 0.0f, 1.0f, 0.0f);
+	lightingShader.setVec3("specularColor", 0.0f, 1.0f, 0.0f);
+	lightingShader.setInt("material_diffuse", t_arbol);
+	
+
+	//arbol1
+	model = glm::translate(model, glm::vec3(0.0f, -4.5f, 0.0f));//bajamos el arbol al piso
+	temp = model;
+	lightingShader.setInt("material_diffuse", t_arbol);
+	model = glm::translate(model, glm::vec3(5.0f, 0.0f, -5.0f));//lo ponemos en su lugar
+	model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));//lo hacemos grande
+	lightingShader.setMat4("model", model);//lo pasamos al modelo
+	glDrawArrays(GL_QUADS, 0, 4); //dibujamos una cara del arbol
+
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));//igual la cara trasera pero la vamos a rotar para que mire de ladito
+	model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.5f));//la acomodamos para que quede chido
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);//el arbol de ladito
+
+	////arbol2
+	model = temp;
+	lightingShader.setInt("material_diffuse", t_arbol);
+	model = glm::translate(model, glm::vec3(-5.0f, 0.0f, -5.0f));//lo ponemos en su lugar
+	model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));//lo hacemos grande
+	lightingShader.setMat4("model", model);//lo pasamos al modelo
+	glDrawArrays(GL_QUADS, 0, 4); //dibujamos una cara del arbol
+
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));//igual la cara trasera pero la vamos a rotar para que mire de ladito
+	model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.5f));//la acomodamos para que quede chido
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);//el arbol de ladito
+
+	////arbol3
+	model = temp;
+	lightingShader.setInt("material_diffuse", t_arbol);
+	model = glm::translate(model, glm::vec3(-5.0f, 0.0f, -15.0f));//lo ponemos en su lugar
+	model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));//lo hacemos grande
+	lightingShader.setMat4("model", model);//lo pasamos al modelo
+	glDrawArrays(GL_QUADS, 0, 4); //dibujamos una cara del arbol
+
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));//igual la cara trasera pero la vamos a rotar para que mire de ladito
+	model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.5f));//la acomodamos para que quede chido
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);//el arbol de ladito
+
+	////arbol4
+	model = temp;
+	lightingShader.setInt("material_diffuse", t_arbol);
+	model = glm::translate(model, glm::vec3(5.0f, 0.0f, -15.0f));//lo ponemos en su lugar
+	model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));//lo hacemos grande
+	lightingShader.setMat4("model", model);//lo pasamos al modelo
+	glDrawArrays(GL_QUADS, 0, 4); //dibujamos una cara del arbol
+
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));//igual la cara trasera pero la vamos a rotar para que mire de ladito
+	model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.5f));//la acomodamos para que quede chido
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);//el arbol de ladito
+
+	////arbol5
+	model = temp;
+	lightingShader.setInt("material_diffuse", t_arbol);
+	model = glm::translate(model, glm::vec3(-23.0f, 0.0f, -5.0f));//lo ponemos en su lugar
+	model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));//lo hacemos grande
+	lightingShader.setMat4("model", model);//lo pasamos al modelo
+	glDrawArrays(GL_QUADS, 0, 4); //dibujamos una cara del arbol
+
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));//igual la cara trasera pero la vamos a rotar para que mire de ladito
+	model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.5f));//la acomodamos para que quede chido
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);//el arbol de ladito
+
+	////arbol6
+	model = temp;
+	lightingShader.setInt("material_diffuse", t_arbol);
+	model = glm::translate(model, glm::vec3(25.0f, 0.0f, -5.0f));//lo ponemos en su lugar
+	model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));//lo hacemos grande
+	lightingShader.setMat4("model", model);//lo pasamos al modelo
+	glDrawArrays(GL_QUADS, 0, 4); //dibujamos una cara del arbol
+
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));//igual la cara trasera pero la vamos a rotar para que mire de ladito
+	model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.5f));//la acomodamos para que quede chido
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);//el arbol de ladito
+
+	////arbol7
+	model = temp;
+	lightingShader.setInt("material_diffuse", t_arbol);
+	model = glm::translate(model, glm::vec3(-15.0f, 0.0f, -40.0f));//lo ponemos en su lugar
+	model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));//lo hacemos grande
+	lightingShader.setMat4("model", model);//lo pasamos al modelo
+	glDrawArrays(GL_QUADS, 0, 4); //dibujamos una cara del arbol
+
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));//igual la cara trasera pero la vamos a rotar para que mire de ladito
+	model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.5f));//la acomodamos para que quede chido
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);//el arbol de ladito
+
+	////arbol8
+	model = temp;
+	lightingShader.setInt("material_diffuse", t_arbol);
+	model = glm::translate(model, glm::vec3(25.0f, 0.0f, -40.0f));//lo ponemos en su lugar
+	model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));//lo hacemos grande
+	lightingShader.setMat4("model", model);//lo pasamos al modelo
+	glDrawArrays(GL_QUADS, 0, 4); //dibujamos una cara del arbol
+
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));//igual la cara trasera pero la vamos a rotar para que mire de ladito
+	model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.5f));//la acomodamos para que quede chido
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);//el arbol de ladito
+
+	////arbol9
+	model = temp;
+	lightingShader.setInt("material_diffuse", t_arbol);
+	model = glm::translate(model, glm::vec3(-15.0f, 0.0f, -20.0f));//lo ponemos en su lugar
+	model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));//lo hacemos grande
+	lightingShader.setMat4("model", model);//lo pasamos al modelo
+	glDrawArrays(GL_QUADS, 0, 4); //dibujamos una cara del arbol
+
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));//igual la cara trasera pero la vamos a rotar para que mire de ladito
+	model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.5f));//la acomodamos para que quede chido
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);//el arbol de ladito
+
+	////arbol10
+	model = temp;
+	lightingShader.setInt("material_diffuse", t_arbol);
+	model = glm::translate(model, glm::vec3(22.0f, 0.0f, -20.0f));//lo ponemos en su lugar
+	model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));//lo hacemos grande
+	lightingShader.setMat4("model", model);//lo pasamos al modelo
+	glDrawArrays(GL_QUADS, 0, 4); //dibujamos una cara del arbol
+
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));//igual la cara trasera pero la vamos a rotar para que mire de ladito
+	model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.5f));//la acomodamos para que quede chido
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);//el arbol de ladito
+
+	////arbol11
+	model = temp;
+	lightingShader.setInt("material_diffuse", t_arbol);
+	model = glm::translate(model, glm::vec3(-18.0f, 0.0f, -15.0f));//lo ponemos en su lugar
+	model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));//lo hacemos grande
+	lightingShader.setMat4("model", model);//lo pasamos al modelo
+	glDrawArrays(GL_QUADS, 0, 4); //dibujamos una cara del arbol
+
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));//igual la cara trasera pero la vamos a rotar para que mire de ladito
+	model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.5f));//la acomodamos para que quede chido
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);//el arbol de ladito
+
+	////arbol12
+	model = temp;
+	lightingShader.setInt("material_diffuse", t_arbol);
+	model = glm::translate(model, glm::vec3(-13.0f, 0.0f, -12.0f));//lo ponemos en su lugar
+	model = glm::scale(model, glm::vec3(3.0f, 3.0f, 3.0f));//lo hacemos grande
+	lightingShader.setMat4("model", model);//lo pasamos al modelo
+	glDrawArrays(GL_QUADS, 0, 4); //dibujamos una cara del arbol
+
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));//igual la cara trasera pero la vamos a rotar para que mire de ladito
+	model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.5f));//la acomodamos para que quede chido
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);//el arbol de ladito
+
+	////arbol13
+	model = temp;
+	lightingShader.setInt("material_diffuse", t_arbol);
+	model = glm::translate(model, glm::vec3(0.0f, 2.0f, -22.0f));//lo ponemos en su lugar
+	model = glm::scale(model, glm::vec3(6.0f, 8.0f, 6.0f));//lo hacemos grande
+	lightingShader.setMat4("model", model);//lo pasamos al modelo
+	glDrawArrays(GL_QUADS, 0, 4); //dibujamos una cara del arbol
+
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));//igual la cara trasera pero la vamos a rotar para que mire de ladito
+	model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.5f));//la acomodamos para que quede chido
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);//el arbol de ladito
 }
 
 //Función de trazo de la montaña rusa
@@ -4416,9 +4796,11 @@ int main()
 			fireBullet();
 		}
 		else {
-			//displayRoallingCoaster(projectionShader);
-			//drawVagon(projectionShader);
-			//displayCarrousell(projectionShader, modelShader, modelCaballo);
+			displayRoallingCoaster(projectionShader);
+			drawVagon(projectionShader);
+			displayCarrousell(projectionShader, modelShader, modelPista);
+			displayStores();
+			displayTrees();
 			displayBushes();
 		}
 		
