@@ -56,6 +56,11 @@ glm::mat4 modelVagon = glm::mat4(1.0f);
 glm::mat4 modelHorse = glm::mat4(1.0f);
 glm::mat4 modelDomo = glm::mat4(1.0f);
 glm::mat4 modelLuces = glm::mat4(1.0f);
+glm::mat4 modelObjetivos = glm::mat4(1.0f);
+glm::mat4 modelObjetivo1 = glm::mat4(1.0f);
+glm::mat4 modelObjetivo2 = glm::mat4(1.0f);
+glm::mat4 modelObjetivo3 = glm::mat4(1.0f);
+glm::mat4 modelObjetivo4 = glm::mat4(1.0f);
 
 //Camera
 Camera camera(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -122,17 +127,22 @@ colorGB = 0.898f;
 float bullet = 0.0f;
 
 //textures
-unsigned int	t_smile,
-				t_toalla,
-				t_unam,
+unsigned int	t_tent1,
+				t_redCurtainL,
+				t_redCurtainR,
 				t_white,
 				t_ladrillo,
 				t_caja,
 				t_caja_brillo,
 				t_domo,
-				t_red,
+				t_madera1,
 				t_bush,
-				t_bush2;
+				t_bush2,
+				t_panel1,
+				t_panel2,
+				t_panel3,
+				t_panel4,
+				t_panel5;
 
 //For carrusel
 float	animTubos = 0.0f,
@@ -307,6 +317,7 @@ unsigned int generateTextures(const char* filename, bool alfa, string name)
 		else
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
+		//std::cout << textureID << std::endl;
 		return textureID;
 	}
 	else
@@ -333,26 +344,31 @@ void getResolution()
 void LoadTextures()
 {
 
-	t_smile = generateTextures("Texturas/awesomeface.png", 1, "smile");
-	t_toalla = generateTextures("Texturas/toalla.tga", 0, "toalla");
-	t_unam = generateTextures("Texturas/escudo_unam.png", 1, "unam");
+	t_tent1 = generateTextures("Texturas/tent1.jpg", 0, "tent1");
+	t_redCurtainL = generateTextures("Texturas/redCurtainL.jpg", 0, "redCurtainL");
+	t_redCurtainR = generateTextures("Texturas/redCurtainR.jpg", 0, "redCurtainR");
 	t_domo = generateTextures("Texturas/domo.jpg", 0, "domo");
 	t_caja = generateTextures("Texturas/caja.png", 1, "caja");
 	t_caja_brillo = generateTextures("Texturas/caja_specular.png", 1, "caja especular");
 	t_ladrillo = generateTextures("Texturas/bricks.jpg", 0, "ladrillos");
-	t_red =	 generateTextures("Texturas/red.jpg", 0, "rojo");
-	t_white = generateTextures("Texturas/white.jpg", 0, "blanco");
+	t_madera1 =	 generateTextures("Texturas/madera1.jpg", 0, "madera1");
+	t_white = generateTextures("Texturas/whiteCurtain.jpg", 0, "blanco");
 	t_bush = generateTextures("Texturas/bush.jpg", 0, "bush");
+	t_panel1 = generateTextures("Texturas/letrero1.png", 1, "letrero1");
+	t_panel2 = generateTextures("Texturas/letrero2.png", 1, "letrero2");
+	t_panel3 = generateTextures("Texturas/letrero3.png", 1, "letrero3");
+	t_panel4 = generateTextures("Texturas/letrero4.png", 1, "letrero4");
+	t_panel5 = generateTextures("Texturas/letrero5.png", 1, "letrero5");
 	t_bush2 = generateTextures("Texturas/bush2.jpg", 0, "bush2");
 	// bind textures on corresponding texture units
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, t_smile);
+	glBindTexture(GL_TEXTURE_2D, t_tent1);
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, t_toalla);
+	glBindTexture(GL_TEXTURE_2D, t_redCurtainL);
 	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, t_unam);
+	glBindTexture(GL_TEXTURE_2D, t_redCurtainR);
 	glActiveTexture(GL_TEXTURE4);
 	glBindTexture(GL_TEXTURE_2D, t_domo);
 	glActiveTexture(GL_TEXTURE5);
@@ -362,12 +378,22 @@ void LoadTextures()
 	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, t_ladrillo);
 	glActiveTexture(GL_TEXTURE8);
-	glBindTexture(GL_TEXTURE_2D, t_red);
+	glBindTexture(GL_TEXTURE_2D, t_madera1);
 	glActiveTexture(GL_TEXTURE9);
 	glBindTexture(GL_TEXTURE_2D, t_white);
 	glActiveTexture(GL_TEXTURE10);
 	glBindTexture(GL_TEXTURE_2D, t_bush);
 	glActiveTexture(GL_TEXTURE11);
+	glBindTexture(GL_TEXTURE_2D, t_panel1);
+	glActiveTexture(GL_TEXTURE12);
+	glBindTexture(GL_TEXTURE_2D, t_panel2);
+	glActiveTexture(GL_TEXTURE13);
+	glBindTexture(GL_TEXTURE_2D, t_panel3);
+	glActiveTexture(GL_TEXTURE14);
+	glBindTexture(GL_TEXTURE_2D, t_panel4);
+	glActiveTexture(GL_TEXTURE15);
+	glBindTexture(GL_TEXTURE_2D, t_panel5);
+	glActiveTexture(GL_TEXTURE16);
 	glBindTexture(GL_TEXTURE_2D, t_bush2);
 }
 
@@ -514,27 +540,27 @@ void myData()
 void animate(void)
 {
 	if (x1 <= 4.0f) {
-		x1 += 0.002f;
+		x1 += 0.01f;
 	}
 	if (x1 > 4.0f) {
 		x1 = 0.0f;
 	}
 	
 	if (x2 <= 3.0f) {
-		x2 += 0.002f;
+		x2 += 0.01f;
 	}
 	if (x2 > 3.0f) {
 		x2 = -1.0f;
 	}
 
 	if (x3 <= 2.0f) {
-		x3 += 0.002f;
+		x3 += 0.01f;
 	}
 	if (x3 > 2.0f) {
 		x3 = -2.0f;
 	}
 	if (x4 <= 1.0f) {
-		x4 += 0.002f;
+		x4 += 0.01f;
 	}
 	if (x4 > 1.0f) {
 		x4 = -3.0f;
@@ -543,7 +569,7 @@ void animate(void)
 	//fire bullet
 	if (fire == true) {
 		if (bullet >= -1.0f) {
-			bullet -= 0.01f;
+			bullet -= 0.05f;
 		}
 		else {
 			bullet = 0.0f;
@@ -868,13 +894,13 @@ void displayPuestoTiro() {
 	lightingShader.setVec3("ambientColor", 0.0f, 0.0f, 0.0f);
 	lightingShader.setVec3("diffuseColor", 1.0f, 1.0f, 1.0f);
 	lightingShader.setVec3("specularColor", 1.0f, 0.0f, 0.0f);
-	lightingShader.setInt("material_diffuse", t_caja);
+	lightingShader.setInt("material_diffuse", t_tent1);
 
 	//cara cubo
 	//model = modelVagon;
 	//model = glm::translate(model, glm::vec3(posX, posY, posZ));
 
-	model = glm::translate(model, glm::vec3(10.0f, -4.35f, -15.0f));
+	modelObjetivos = model = glm::translate(model, glm::vec3(10.0f, -4.35f, -15.0f));
 	temp = model = glm::scale(model, glm::vec3(5.0f, 3.5f, 4.0f));
 	lightingShader.setMat4("model", model);
 	glDrawArrays(GL_QUADS, 0, 4);
@@ -903,6 +929,7 @@ void displayPuestoTiro() {
 	glDrawArrays(GL_QUADS, 4, 4);
 
 	//segunda pared
+	lightingShader.setInt("material_diffuse", t_madera1);
 	model = temp;
 	model = glm::translate(model, glm::vec3(0.0f, -0.35f, 0.05f));
 	model = glm::scale(model, glm::vec3(1.0f, 0.3f, 1.0f));
@@ -915,17 +942,34 @@ void displayPuestoTiro() {
 	lightingShader.setMat4("model", model);
 	glDrawArrays(GL_QUADS, 0, 4);
 
+	lightingShader.setInt("material_diffuse", t_redCurtainL);
 	model = temp;
 	model = glm::translate(model, glm::vec3(-0.4f, 0.05f, 0.05f));
 	model = glm::scale(model, glm::vec3(0.2f, 0.5f, 1.0f));
 	lightingShader.setMat4("model", model);
 	glDrawArrays(GL_QUADS, 0, 4);
 
+	lightingShader.setInt("material_diffuse", t_redCurtainR);
 	model = temp;
 	model = glm::translate(model, glm::vec3(0.4f, 0.05f, 0.05f));
 	model = glm::scale(model, glm::vec3(0.2f, 0.51f, 1.0f));
 	lightingShader.setMat4("model", model);
 	glDrawArrays(GL_QUADS, 0, 4);
+	//PANEL
+	lightingShader.setInt("material_diffuse", t_panel4);
+	model = temp;
+	model = glm::translate(model, glm::vec3(0.465f, 0.05f, 1.001f));
+	model = glm::scale(model, glm::vec3(0.33f, 0.7f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);
+
+	lightingShader.setInt("material_diffuse", t_panel2);
+	model = temp;
+	model = glm::translate(model, glm::vec3(-0.33f, 0.05f, 1.001f));
+	model = glm::scale(model, glm::vec3(0.33f, 0.7f, 1.0f));
+	lightingShader.setMat4("model", model);
+	glDrawArrays(GL_QUADS, 0, 4);
+
 
 	//mesa
 	lightingShader.setInt("material_diffuse", t_white);
@@ -951,6 +995,7 @@ void objetivosDisparo() {
 
 	// create transformations and Projection
 	glm::mat4 tmp = glm::mat4(1.0f);
+	glm::mat4 tmp2 = glm::mat4(1.0f);
 	glm::mat4 model = glm::mat4(1.0f);		// initialize Matrix, Use this matrix for individual models
 	glm::mat4 view = glm::mat4(1.0f);		//Use this matrix for ALL models
 	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
@@ -968,8 +1013,9 @@ void objetivosDisparo() {
 
 	glBindVertexArray(VAO);
 
-	tmp = model = glm::translate(model, glm::vec3(10.0f, -5.0f, -16.85f));
-	model = glm::translate(model, glm::vec3(x3, sin(animTubos*0.1f)*0.1f, 0.0f));
+	model = modelObjetivos;
+	tmp = model = glm::translate(model, glm::vec3(0.0f, -0.65f, -1.85f));
+	modelObjetivo1 = model = glm::translate(model, glm::vec3(x3, sin(animTubos*0.1f)*0.1f, 0.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(0.12f, 0.03f, 0.03));
 	projectionShader.setMat4("model", model);
@@ -981,11 +1027,11 @@ void objetivosDisparo() {
 	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f));
 	projectionShader.setMat4("model", model);
-	my_esfera.render();
+	//my_esfera.render();
 
 	model = tmp;
 	model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
-	model = glm::translate(model, glm::vec3(x4, cos(animTubos*0.1f)*0.1f, 0.0f));
+	modelObjetivo2 = model = glm::translate(model, glm::vec3(x4, cos(animTubos*0.1f)*0.1f, 0.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(0.12f, 0.03f, 0.03));
 	projectionShader.setMat4("model", model);
@@ -994,11 +1040,11 @@ void objetivosDisparo() {
 	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f));
 	projectionShader.setMat4("model", model);
-	my_esfera.render();
+	//my_esfera.render();
 
 	model = tmp;
 	model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 0.0f));
-	model = glm::translate(model, glm::vec3(x2, cos(animTubos*0.1f)*0.1f, 0.0f));
+	modelObjetivo3 = model = glm::translate(model, glm::vec3(x2, cos(animTubos*0.1f)*0.1f, 0.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(0.12f, 0.03f, 0.03));
 	projectionShader.setMat4("model", model);
@@ -1007,11 +1053,11 @@ void objetivosDisparo() {
 	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f));
 	projectionShader.setMat4("model", model);
-	my_esfera.render();
+	//my_esfera.render();
 
 	model = tmp;
 	model = glm::translate(model, glm::vec3(-2.0f, 0.0f, 0.0f));
-	model = glm::translate(model, glm::vec3(x1, sin(animTubos*0.1f)*0.1f, 0.0f));
+	modelObjetivo4 = model = glm::translate(model, glm::vec3(x1, sin(animTubos*0.1f)*0.1f, 0.0f));
 	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 	model = glm::scale(model, glm::vec3(0.12f, 0.03f, 0.03));
 	projectionShader.setMat4("model", model);
@@ -1020,7 +1066,7 @@ void objetivosDisparo() {
 	model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
 	model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f));
 	projectionShader.setMat4("model", model);
-	my_esfera.render();
+	//my_esfera.render();
 }
 
 void displayGun() {
@@ -1108,6 +1154,11 @@ void fireBullet(){
 
 }
 
+void displayFarol() {
+
+
+
+}
 
 void displayCubes()
 {
@@ -1222,7 +1273,7 @@ void displayCubes()
 
 }
 
-void display(Shader shader, Model ground)
+void display(Shader shader, Model ground, Model UFO)
 {
 	shader.use();
 
@@ -1247,6 +1298,39 @@ void display(Shader shader, Model ground)
 	model = glm::scale(model, glm::vec3(tamanioPista / 10, tamanioPista / 10, tamanioPista / 10));
 	shader.setMat4("model", model);
 	ground.Draw(shader);
+
+	model = modelObjetivo3;
+	//ufo1
+	model = glm::translate(model, glm::vec3(0.1f, 0.2f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.008f, 0.008f, 0.001f));
+	model = glm::rotate(model, glm::radians(35.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::rotate(model, glm::radians(35.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	shader.setMat4("model", model);
+	UFO.Draw(shader);
+
+	model = modelObjetivo2;
+	//ufo1
+	model = glm::translate(model, glm::vec3(0.05f, 0.2f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.008f, 0.008f, 0.001f));
+	model = glm::rotate(model, glm::radians(35.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	shader.setMat4("model", model);
+	UFO.Draw(shader);
+
+	model = modelObjetivo1;
+	//ufo1
+	model = glm::translate(model, glm::vec3(0.1f, 0.1f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.008f, 0.008f, 0.001f));
+	model = glm::rotate(model, glm::radians(35.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	shader.setMat4("model", model);
+	UFO.Draw(shader);
+
+	model = modelObjetivo4;
+	//ufo1
+	model = glm::translate(model, glm::vec3(-0.1f, 0.1f, 0.0f));
+	model = glm::scale(model, glm::vec3(0.008f, 0.008f, 0.001f));
+	model = glm::rotate(model, glm::radians(-35.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	shader.setMat4("model", model);
+	UFO.Draw(shader);
 
 }
 
@@ -4290,12 +4374,13 @@ int main()
 	//Model modelBanca	= ((char *)"Models/banca/banca.obj");
 	//Model modelBasura	= ((char *)"Models/basura/basura.obj");
 	//Model modelBarda	= ((char *)"Models/barda/barda.obj");
-	Model modelCaballo = ((char *)"Models/caballo/caballo.obj");
+	//Model modelCaballo = ((char *)"Models/caballo/caballo.obj");
 	//Model modelLuz2		= ((char *)"Models/luz_dual/luz_dual.obj");
 	//Model modelLuz4		= ((char *)"Models/luz_quad/luz_quad.obj");
 	//Model modelLuz1		= ((char *)"Models/luz_simple/luz_simple.obj");
 	//Model modelEntrada	= ((char *)"Models/arco/arco.obj");
 	//Model Model = ((char *)"Models/.obj");
+	Model modelUFO = ((char *)"Models/ufo/Low_poly_UFO.obj");
 
 	glm::mat4 projection = glm::mat4(1.0f);	//This matrix is for Projection
 	projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
@@ -4320,7 +4405,7 @@ int main()
         // Backgound color
 		glClearColor(colorR, colorGB, colorGB, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		display(modelShader, modelPista);
+		display(modelShader, modelPista,modelUFO);
 		diplayElemCielo();
 		//displayObjects(modelShader, modelTierra, modelPista, /*modelArbol, modelBanca, modelBasura, modelBarda,*/ modelCaballo, /*modelLuz2,*/ modelLuz4/*, modelLuz1, modelEntrada*/);
 		displayEnvironment();
@@ -4415,30 +4500,50 @@ void my_input(GLFWwindow *window)
 
 
 	if (glfwGetKey(window, GLFW_KEY_KP_4) == GLFW_PRESS ) {
-		if (fire == false) {
+		if (game == true) {
+			if (fire == false && mov_horizontal <= 25.0f) {
+				camera.ProcessMouseMovement(-xoffset1 / (float)deltaTime, 0);
+				mov_horizontal += 0.1f*xoffset1 / (float)deltaTime;
+			}
+		}
+		else {
 			camera.ProcessMouseMovement(-xoffset1 / (float)deltaTime, 0);
-			mov_horizontal += 0.1f*xoffset1 / (float)deltaTime;
 		}
 		
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_KP_6) == GLFW_PRESS) {
-		if (fire == false) {
+		if (game == true) {
+			if (fire == false && mov_horizontal >= -25.0f) {
+				camera.ProcessMouseMovement(xoffset1 / (float)deltaTime, 0);
+				mov_horizontal -= 0.1f*xoffset1 / (float)deltaTime;
+			}
+		}
+		else {
 			camera.ProcessMouseMovement(xoffset1 / (float)deltaTime, 0);
-			mov_horizontal -= 0.1f*xoffset1 / (float)deltaTime;
 		}
 	}
 	if (glfwGetKey(window, GLFW_KEY_KP_8) == GLFW_PRESS) {
-		if (fire == false) {
+		if (game == true) {
+			if (fire == false && mov_vertical <= 25.0f) {
+				camera.ProcessMouseMovement(0, yoffset1 / (float)deltaTime);
+				mov_vertical += 0.1f*yoffset1 / (float)deltaTime;
+			}
+		}
+		else {
 			camera.ProcessMouseMovement(0, yoffset1 / (float)deltaTime);
-			mov_vertical += 0.1f*yoffset1 / (float)deltaTime;
 		}
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_KP_2) == GLFW_PRESS && fire == false) {
-		if (fire == false) {
+		if (game == true) {
+			if (fire == false && mov_vertical >= -25.0f) {
+				camera.ProcessMouseMovement(0, -yoffset1 / (float)deltaTime);
+				mov_vertical -= 0.1f*yoffset1 / (float)deltaTime;
+			}
+		}
+		else {
 			camera.ProcessMouseMovement(0, -yoffset1 / (float)deltaTime);
-			mov_vertical -= 0.1f*yoffset1 / (float)deltaTime;
 		}
 	}
 
@@ -4558,7 +4663,7 @@ void my_input(GLFWwindow *window)
 		glfwWaitEventsTimeout(1.7);
 	}
 
-	if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS && camera.Position.x >= 9.0f && camera.Position.x <= 11.0f && camera.Position.z <= -12.5f && camera.Position.z >= -13.0f) {
 		mov_horizontal = 0.0f;
 		mov_vertical = 0.0f;
 		if (game == false) {
