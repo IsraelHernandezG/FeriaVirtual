@@ -2699,18 +2699,6 @@ void displayTrees() {
 	lightingShader.setMat4("model", model);
 	glDrawArrays(GL_QUADS, 0, 4);//el arbol de ladito
 
-	////arbol13
-	model = temp;
-	lightingShader.setInt("material_diffuse", t_arbol);
-	model = glm::translate(model, glm::vec3(0.0f, 2.0f, -22.0f));//lo ponemos en su lugar
-	model = glm::scale(model, glm::vec3(6.0f, 8.0f, 6.0f));//lo hacemos grande
-	lightingShader.setMat4("model", model);//lo pasamos al modelo
-	glDrawArrays(GL_QUADS, 0, 4); //dibujamos una cara del arbol
-
-	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));//igual la cara trasera pero la vamos a rotar para que mire de ladito
-	model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.5f));//la acomodamos para que quede chido
-	lightingShader.setMat4("model", model);
-	glDrawArrays(GL_QUADS, 0, 4);//el arbol de ladito
 }
 
 //Función de trazo de la montaña rusa
@@ -4754,7 +4742,7 @@ int main()
 	//Model modelBanca	= ((char *)"Models/banca/banca.obj");
 	//Model modelBasura	= ((char *)"Models/basura/basura.obj");
 	//Model modelBarda	= ((char *)"Models/barda/barda.obj");
-	//Model modelCaballo = ((char *)"Models/caballo/caballo.obj");
+	Model modelCaballo = ((char *)"Models/caballo/caballo.obj");
 	//Model modelLuz2		= ((char *)"Models/luz_dual/luz_dual.obj");
 	//Model modelLuz4		= ((char *)"Models/luz_quad/luz_quad.obj");
 	//Model modelLuz1		= ((char *)"Models/luz_simple/luz_simple.obj");
@@ -4798,7 +4786,7 @@ int main()
 		else {
 			displayRoallingCoaster(projectionShader);
 			drawVagon(projectionShader);
-			displayCarrousell(projectionShader, modelShader, modelPista);
+			displayCarrousell(projectionShader, modelShader, modelCaballo);
 			displayStores();
 			displayTrees();
 			displayBushes();
